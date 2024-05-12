@@ -44,6 +44,9 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
+def user_avatar_path(instance: "User", filename: str) -> pathlib.Path:
+    filename = f"{slugify(instance.email)}-{uuid.uuid4()}" + pathlib.Path(filename).suffix
+    return pathlib.Path("uploads/avatars/") / pathlib.Path(filename)
 
 
 class User(AbstractUser):
@@ -53,6 +56,7 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
     objects = UserManager()
+    avatar = models.ImageField(upload_to=user_avatar_path)
 
     def __str__(self):
         return self.email
