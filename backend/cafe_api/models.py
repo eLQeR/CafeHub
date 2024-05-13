@@ -74,5 +74,5 @@ class Contact(models.Model):
     cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE)
 
 
-class Feature:
+class Feature(models.Model):
     name = models.CharField(max_length=155, unique=True)
