@@ -5,6 +5,10 @@ from django.db import models
 from django.utils.text import slugify
 
 
+class Feature(models.Model):
+    name = models.CharField(max_length=155, unique=True)
+
+
 class Cafe(models.Model):
     class Metro(models.TextChoices):
         Zhytomyrska = "Житомирська", "Zhytomyrska"
@@ -50,6 +54,7 @@ class Cafe(models.Model):
     email = models.EmailField(max_length=155)
     data_created = models.DateField()
     medium_check = models.PositiveIntegerField(null=True, blank=True)
+    features = models.ManyToManyField(to=Feature, blank=True)
     type = models.CharField(
         max_length=155,
         choices=EstablishmentType.choices,
@@ -71,18 +76,14 @@ class Cafe(models.Model):
         upload_to="uploads/main_photos/",
         default="uploads/main_photos/default.jpg"
     )
-
     def __str__(self):
         return self.name
 
 
 class Contact(models.Model):
     phone = models.CharField(max_length=155)
-    cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE)
+    cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name="contacts")
 
-
-class Feature(models.Model):
-    name = models.CharField(max_length=155, unique=True)
 
 
 def cafe_images_path(instance: "Gallery", filename: str) -> pathlib.Path:
