@@ -1,4 +1,8 @@
+import pathlib
+import uuid
+
 from django.db import models
+from django.utils.text import slugify
 
 
 class Cafe(models.Model):
@@ -68,6 +72,9 @@ class Cafe(models.Model):
         default="uploads/main_photos/default.jpg"
     )
 
+    def __str__(self):
+        return self.name
+
 
 class Contact(models.Model):
     phone = models.CharField(max_length=155)
@@ -76,3 +83,16 @@ class Contact(models.Model):
 
 class Feature(models.Model):
     name = models.CharField(max_length=155, unique=True)
+
+
+def cafe_images_path(instance: "Gallery", filename: str) -> pathlib.Path:
+    filename = f"{slugify(instance.id)}-{uuid.uuid4()}" + pathlib.Path(filename).suffix
+    return pathlib.Path("uploads/cafe/gallery/") / pathlib.Path(filename)
+
+
+class Gallery(models.Model):
+    image = models.ImageField()
+    cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name="images")
+
+    def __str__(self):
+        return f"{self.cafe.name} - {self.image.name}"

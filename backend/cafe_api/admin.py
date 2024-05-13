@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Cafe, Contact, Feature
+from .models import Cafe, Contact, Feature, Gallery
 
-admin.site.register(Cafe)
-admin.site.register(Contact)
-admin.site.register(Feature)
+models = [Cafe, Contact, Feature, Gallery]
+for model in models:
+    admin.site.register(model)
