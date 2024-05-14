@@ -4,9 +4,11 @@ from django.urls import reverse
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from token_generator import account_activation_token
+from Cafe_system.celery import app
+from Cafe_system.settings import EMAIL_HOST_USER
 
 
-@shared_task
+@app.task
 def send_verification_email(user_id, domain):
     from .models import User
     user = User.objects.get(pk=user_id)
@@ -17,7 +19,7 @@ def send_verification_email(user_id, domain):
     send_mail(
         "Verify your email",
         message,
-        "from@example.com",
+        EMAIL_HOST_USER,
         [user.email],
         fail_silently=False,
     )
