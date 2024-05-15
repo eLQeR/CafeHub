@@ -1,6 +1,7 @@
 import pathlib
 import uuid
 
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.text import slugify
 
@@ -47,6 +48,7 @@ class Cafe(models.Model):
         Cafe = ("Кафе", "Cafe")
         Pub = ("Паб", "Pub")
         Pizzeria = ("Піцерія", "Pizzeria")
+        Bakery = ("Пекарня", "Bakery")
 
     name = models.CharField(max_length=155)
     city = models.CharField(max_length=155)
@@ -76,6 +78,8 @@ class Cafe(models.Model):
         upload_to="uploads/main_photos/",
         default="uploads/main_photos/default.jpg"
     )
+    description = models.TextField(null=True, blank=True)
+
     def __str__(self):
         return self.name
 
@@ -83,7 +87,6 @@ class Cafe(models.Model):
 class Contact(models.Model):
     phone = models.CharField(max_length=155)
     cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name="contacts")
-
 
 
 def cafe_images_path(instance: "Gallery", filename: str) -> pathlib.Path:
@@ -97,3 +100,19 @@ class Gallery(models.Model):
 
     def __str__(self):
         return f"{self.cafe.name} - {self.image.name}"
+
+
+class Review(models.Model):
+    mark = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name="reviews")
+    description = models.TextField(null=True, blank=True)
+
+
+def review_images_path(instance: "ReviewImage", filename: str) -> pathlib.Path:
+    filename = f"{slugify(filename)}-{uuid.uuid4()}" + pathlib.Path(filename).suffix
+    return pathlib.Path("uploads/cafe/reviews/") / pathlib.Path(filename)
+
+
+class ReviewImage(models.Model):
+    review = models.ForeignKey(to=Review, on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField()
