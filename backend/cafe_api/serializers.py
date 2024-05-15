@@ -4,6 +4,14 @@ from cafe_api.models import Cafe, Feature, Gallery, Contact
 
 
 class CafeSerializer(serializers.ModelSerializer):
+    mark = serializers.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        min_value=1,
+        max_value=5,
+        read_only=True
+    )
+
     class Meta:
         model = Cafe
         fields = (
@@ -14,6 +22,7 @@ class CafeSerializer(serializers.ModelSerializer):
             "email",
             "data_created",
             "medium_check",
+            "mark",
             "type",
             "сuisine",
             "metro",
@@ -23,6 +32,7 @@ class CafeSerializer(serializers.ModelSerializer):
 
 
 class CafeListSerializer(CafeSerializer):
+
     class Meta:
         model = Cafe
         fields = (
@@ -30,8 +40,8 @@ class CafeListSerializer(CafeSerializer):
             "name",
             "address",
             "medium_check",
+            "mark",
             "type",
-            "сuisine",
             "metro",
             "main_photo",
         )
@@ -68,8 +78,8 @@ class CafeDetailSerializer(CafeSerializer):
             "city",
             "address",
             "email",
-            "data_created",
             "medium_check",
+            "mark",
             "type",
             "сuisine",
             "metro",
