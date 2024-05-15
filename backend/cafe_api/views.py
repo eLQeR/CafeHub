@@ -1,3 +1,4 @@
+from django.db.models import Avg
 from django.shortcuts import render
 from rest_framework import generics, mixins, viewsets
 
@@ -28,4 +29,7 @@ class CafeViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(address__icontains=address)
         if type:
             queryset = queryset.filter(type=type)
-        return queryset
+
+        return queryset.annotate(
+            mark=(Avg("reviews__mark"))
+        )
