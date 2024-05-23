@@ -10,25 +10,16 @@ class Feature(models.Model):
     name = models.CharField(max_length=155, unique=True)
 
 
+class Metro(models.Model):
+    name = models.CharField(max_length=155, unique=True)
+    short_name = models.CharField(max_length=155, unique=True)
+    slug = models.SlugField(max_length=155, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Cafe(models.Model):
-    class Metro(models.TextChoices):
-        Zhytomyrska = "Житомирська", "Zhytomyrska"
-        Sviatoshyno = "Святошин", "Sviatoshyno"
-        Nyvky = "Нивки", "Nyvky"
-        Beresteiska = "Берестейська", "Beresteiska"
-        Shuliavska = "Шулявська", "Shuliavska"
-        Vokzalna = "Вокзальна", "Vokzalna"
-        Universytet = "Університет", "Universytet"
-        Teatralna = "Театральна", "Teatralna"
-        Khreshchatyk = "Хрещатик", "Khreshchatyk"
-        Arsenalna = "Арсенальна", "Arsenalna"
-        Dnipro = "Дніпро", "Dnipro"
-        Hidropark = "Гідропарк", "Hidropark"
-        Livoberezhna = "Лівобережна", "Livoberezhna"
-        Darnytsia = "Дарниця", "Darnytsia"
-        Chernihivska = "Чернігівська", "Chernihivska"
-        Lisova = "Лісова", "Lisova"
-        Obolon = "Оболонь", "Obolon"
 
     class Cuisine(models.TextChoices):
         Japanese = ("Японська", "Japanese")
@@ -57,6 +48,7 @@ class Cafe(models.Model):
     data_created = models.DateField()
     medium_check = models.PositiveIntegerField(null=True, blank=True)
     features = models.ManyToManyField(to=Feature, blank=True)
+    url = models.SlugField(max_length=255, unique=True)
     type = models.CharField(
         max_length=155,
         choices=EstablishmentType.choices,
@@ -68,11 +60,10 @@ class Cafe(models.Model):
         null=True,
         blank=True
     )
-    metro = models.CharField(
-        max_length=155,
-        choices=Metro.choices,
-        null=True,
-        blank=True
+    metro = models.ForeignKey(
+        to=Metro,
+        on_delete=models.CASCADE,
+        related_name="cafes",
     )
     main_photo = models.ImageField(
         upload_to="uploads/main_photos/",
@@ -83,7 +74,13 @@ class Cafe(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def reviews_count(self):
+        return Review.objects.filter(cafe=self).count()
 
+    @property
+    def average_review(self):
+        return round(sum(self.reviews.all()) / self.reviews_count, 2)
 class Contact(models.Model):
     phone = models.CharField(max_length=155)
     cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name="contacts")
@@ -105,6 +102,7 @@ class Gallery(models.Model):
 class Review(models.Model):
     mark = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name="reviews")
+    data_created = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
 
 
