@@ -9,11 +9,21 @@ from django.utils.text import slugify
 class Feature(models.Model):
     name = models.CharField(max_length=155, unique=True)
 
+    def __str__(self):
+        return self.name
+
+
+class LineOfMetro(models.Model):
+    name = models.CharField(max_length=155, unique=True)
+
+    def __str__(self):
+        return self.name
+
 
 class Metro(models.Model):
     name = models.CharField(max_length=155, unique=True)
-    short_name = models.CharField(max_length=155, unique=True)
     slug = models.SlugField(max_length=155, unique=True)
+    line = models.ForeignKey(LineOfMetro, on_delete=models.CASCADE, related_name='metroes')
 
     def __str__(self):
         return self.name
@@ -54,7 +64,7 @@ class Cafe(models.Model):
         choices=EstablishmentType.choices,
         default=EstablishmentType.Cafe
     )
-    сuisine = models.CharField(
+    cuisine = models.CharField(
         max_length=155,
         choices=Cuisine.choices,
         null=True,
@@ -83,9 +93,14 @@ class Cafe(models.Model):
     @property
     def average_review(self):
         return round(sum(self.reviews.all()) / self.reviews_count, 2)
+
+
 class Contact(models.Model):
     phone = models.CharField(max_length=155)
     cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name="contacts")
+
+    def __str__(self):
+        return f"{self.phone} - {self.cafe.name}"
 
 
 def cafe_images_path(instance: "Gallery", filename: str) -> pathlib.Path:
@@ -106,6 +121,9 @@ class Review(models.Model):
     cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name="reviews")
     data_created = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.mark} - {self.cafe.name}"
 
 
 def review_images_path(instance: "ReviewImage", filename: str) -> pathlib.Path:
