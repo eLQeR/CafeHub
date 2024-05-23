@@ -1,9 +1,9 @@
 from django.db.models import Avg
-from django.shortcuts import render
 from rest_framework import generics, mixins, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from cafe_api.models import Cafe, Metro, Feature
+from cafe_api.permissions import IsAdminOrReadOnly
 from cafe_api.serializers import CafeSerializer, CafeListSerializer, CafeDetailSerializer, FeatureSerializer, \
     MetroSerializer
 
@@ -11,6 +11,7 @@ from cafe_api.serializers import CafeSerializer, CafeListSerializer, CafeDetailS
 class CafeViewSet(viewsets.ModelViewSet):
     queryset = Cafe.objects.all()
     serializer_class = CafeSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_serializer_class(self):
         if self.action == 'list':
