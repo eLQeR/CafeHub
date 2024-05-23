@@ -1,9 +1,11 @@
 from django.db.models import Avg
 from django.shortcuts import render
 from rest_framework import generics, mixins, viewsets
-
-from cafe_api.models import Cafe
-from cafe_api.serializers import CafeSerializer, CafeListSerializer, CafeDetailSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from cafe_api.models import Cafe, Metro, Feature
+from cafe_api.serializers import CafeSerializer, CafeListSerializer, CafeDetailSerializer, FeatureSerializer, \
+    MetroSerializer
 
 
 class CafeViewSet(viewsets.ModelViewSet):
@@ -33,3 +35,14 @@ class CafeViewSet(viewsets.ModelViewSet):
         return queryset.annotate(
             mark=(Avg("reviews__mark"))
         )
+
+
+@api_view(["GET"])
+def get_filters_view(request, *args, **kwargs):
+    return Response(
+        {
+            "metroes": MetroSerializer(Metro.objects.all(), many=True).data,
+            "features": FeatureSerializer(Feature.objects.all(), many=True).data
+         },
+        status=200,
+    )
