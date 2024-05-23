@@ -1,12 +1,12 @@
+from decimal import Decimal
+
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from cafe_api.models import Cafe, Feature, Gallery, Contact
+from cafe_api.models import Cafe, Feature, Gallery, Contact, Review, ReviewImage, Metro
 
 
 class CafeSerializer(serializers.ModelSerializer):
-    mark = serializers.DecimalField(
-        max_digits=4,
-        decimal_places=2,
+    mark = serializers.IntegerField(
         min_value=1,
         max_value=5,
         read_only=True
@@ -27,7 +27,8 @@ class CafeSerializer(serializers.ModelSerializer):
             "сuisine",
             "metro",
             "main_photo",
-            "contacts"
+            "contacts",
+            "reviews"
         )
 
 
@@ -44,7 +45,14 @@ class CafeListSerializer(CafeSerializer):
             "type",
             "metro",
             "main_photo",
+            "reviews"
         )
+
+
+class CafeCommentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cafe
+        fields = ("reviews", )
 
 
 class FeatureSerializer(serializers.ModelSerializer):
@@ -88,3 +96,20 @@ class CafeDetailSerializer(CafeSerializer):
             "features",
             "images"
         )
+
+
+class ReviewImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReviewImage
+        fields = ("image", )
+
+class ReviewSerializer(serializers.ModelSerializer):
+    images = serializers.SerializerMethodField()
+    class Meta:
+        model = Review
+        fields = ("id", "mark", "cafe", "description", "images")
+
+class MetroSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Metro
+        fields = "__all__"
