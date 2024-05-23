@@ -64,6 +64,8 @@ class Cafe(models.Model):
         to=Metro,
         on_delete=models.CASCADE,
         related_name="cafes",
+        null=True,
+        blank=True
     )
     main_photo = models.ImageField(
         upload_to="uploads/main_photos/",
