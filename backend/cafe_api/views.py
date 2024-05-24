@@ -1,17 +1,23 @@
 from django.db.models import Avg
+from django.utils.text import slugify
 from rest_framework import generics, mixins, viewsets
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
-from cafe_api.models import Cafe, Metro, Feature
+from cafe_api.models import Cafe, Metro, Feature, LineOfMetro
 from cafe_api.permissions import IsAdminOrReadOnly
 from cafe_api.serializers import CafeSerializer, CafeListSerializer, CafeDetailSerializer, FeatureSerializer, \
-    MetroSerializer
+    MetroSerializer, ReviewSerializer
 
 
 class CafeViewSet(viewsets.ModelViewSet):
     queryset = Cafe.objects.all()
     serializer_class = CafeSerializer
     permission_classes = [IsAdminOrReadOnly]
+
+    @action(detail=True, methods=['GET'], url_path="get-reviews")
+    def get_reviews(self, request, pk=None):
+        cafe = self.get_object()
+        return Response(ReviewSerializer(cafe.reviews.all(), many=True).data, status=200)
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -42,8 +48,12 @@ class CafeViewSet(viewsets.ModelViewSet):
 def get_filters_view(request, *args, **kwargs):
     return Response(
         {
-            "metroes": MetroSerializer(Metro.objects.all(), many=True).data,
+            "metro": {
+                "green": MetroSerializer(Metro.objects.filter(line__name="Зелена"), many=True).data,
+                "blue": MetroSerializer(Metro.objects.filter(line__name="Синя"), many=True).data,
+                "red": MetroSerializer(Metro.objects.filter(line__name="Червона"), many=True).data,
+            },
             "features": FeatureSerializer(Feature.objects.all(), many=True).data
-         },
+        },
         status=200,
     )
