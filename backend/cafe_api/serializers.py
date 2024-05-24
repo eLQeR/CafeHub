@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from cafe_api.models import Cafe, Feature, Gallery, Contact, Review, ReviewImage, Metro
@@ -103,13 +101,17 @@ class ReviewImageSerializer(serializers.ModelSerializer):
         model = ReviewImage
         fields = ("image", )
 
+
 class ReviewSerializer(serializers.ModelSerializer):
-    images = serializers.SerializerMethodField()
+    images = ReviewImageSerializer(many=True, read_only=False)
+
     class Meta:
         model = Review
         fields = ("id", "mark", "cafe", "description", "images")
+        extra_kwargs = {"cafe": {"write_only": True}}
+
 
 class MetroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Metro
-        fields = "__all__"
+        fields = ("id", "name", "slug")
