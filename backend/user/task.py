@@ -6,16 +6,13 @@ from django.utils.encoding import force_bytes
 from token_generator import account_activation_token
 from Cafe_system.celery import app
 from Cafe_system.settings import EMAIL_HOST_USER
+from .models import User
 
 
 @app.task
-def send_verification_email(user_id, domain):
-    from .models import User
+def send_verification_email(user_id, verification_link):
     user = User.objects.get(pk=user_id)
-    token = account_activation_token.make_token(user)
-    uid = urlsafe_base64_encode(force_bytes(user.pk))
-    url = f"https://{domain}{reverse('activate', kwargs={'uidb64': uid, 'token': token})}"
-    message = f"Please click on the link to verify your email: {url}"
+    message = f"Please click on the link to verify your email: {verification_link}"
     send_mail(
         "Verify your email",
         message,

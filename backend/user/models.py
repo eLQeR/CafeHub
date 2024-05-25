@@ -57,7 +57,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
     objects = UserManager()
     avatar = models.ImageField(upload_to=user_avatar_path)
-    email_verified = models.BooleanField(default=False)
+    is_email_verified = models.BooleanField(default=False)
 
     def __str__(self):
         return self.email
