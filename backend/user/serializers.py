@@ -23,8 +23,8 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = get_user_model().objects.create_user(**validated_data)
         user.verification_uuid = uuid.uuid4()
-        verification_link = f"http://{self.context['request'].get_host()}/api/user/token/"
-        send_verification_email(user.id, verification_link)
+        #verification_link = f"http://{self.context['request'].get_host()}/api/user/token/"
+        send_verification_email(user.id)
         return user
 
     def update(self, instance, validated_data):
