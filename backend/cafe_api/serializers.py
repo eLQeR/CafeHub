@@ -71,29 +71,10 @@ class GallerySerializer(serializers.ModelSerializer):
         fields = ("image", )
 
 
-class CafeDetailSerializer(CafeSerializer):
-    contacts = serializers.SlugRelatedField(slug_field="phone", read_only=True, many=True)
-    features = FeatureSerializer(many=True, read_only=True)
-    images = GallerySerializer(many=True, read_only=True)
-
+class MetroSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Cafe
-        fields = (
-            "id",
-            "name",
-            "city",
-            "address",
-            "email",
-            "medium_check",
-            "mark",
-            "type",
-            "cuisine",
-            "metro",
-            "main_photo",
-            "contacts",
-            "features",
-            "images"
-        )
+        model = Metro
+        fields = ("id", "name", "slug")
 
 
 class ReviewImageSerializer(serializers.ModelSerializer):
@@ -111,7 +92,33 @@ class ReviewSerializer(serializers.ModelSerializer):
         extra_kwargs = {"cafe": {"write_only": True}}
 
 
-class MetroSerializer(serializers.ModelSerializer):
+class CafeDetailSerializer(CafeSerializer):
+    contacts = serializers.SlugRelatedField(slug_field="phone", read_only=True, many=True)
+    features = FeatureSerializer(many=True, read_only=True)
+    images = GallerySerializer(many=True, read_only=True)
+    metro = MetroSerializer(many=False, read_only=True)
+    reviews = ReviewSerializer(many=True, read_only=True)
+
     class Meta:
-        model = Metro
-        fields = ("id", "name", "slug")
+        model = Cafe
+        fields = (
+            "id",
+            "name",
+            "city",
+            "address",
+            "email",
+            "medium_check",
+            "mark",
+            "description",
+            "type",
+            "cuisine",
+            "metro",
+            "main_photo",
+            "contacts",
+            "features",
+            "images",
+            "reviews"
+        )
+
+
+
