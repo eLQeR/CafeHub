@@ -1,6 +1,5 @@
 import pathlib
 import uuid
-
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.text import slugify
@@ -29,28 +28,23 @@ class Metro(models.Model):
         return self.name
 
 
+class Cuisine(models.Model):
+    name = models.CharField(max_length=155, unique=True)
+    slug = models.SlugField(max_length=155, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class EstablishmentType(models.Model):
+    name = models.CharField(max_length=155, unique=True)
+    slug = models.SlugField(max_length=155, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Cafe(models.Model):
-
-    class Cuisine(models.TextChoices):
-        Japanese = ("Japanese", "Японська")
-        Italian = ("Italian", "Італійська")
-        French = ("French", "Французька")
-        Chinese = ("Chinese", "Китайська")
-        Indian = ("Indian", "Індійська")
-        Mexican = ("Mexican", "Мексиканська")
-        Thai = ("Thai", "Тайська")
-        Greek = ("Greek", "Грецька")
-        Spanish = ("Spanish", "Іспанська")
-        Ukrainian = ("Ukrainian", "Українська")
-
-    class EstablishmentType(models.TextChoices):
-        Bar = ("Bar", "Бар")
-        Restaurant = ("Restaurant", "Ресторан")
-        Cafe = ("Cafe", "Кафе")
-        Pub = ("Pub", "Паб")
-        Pizzeria = ("Pizzeria", "Піцерія")
-        Bakery = ("Bakery", "Пекарня", )
-
     name = models.CharField(max_length=155)
     city = models.CharField(max_length=155)
     address = models.CharField(max_length=155)
@@ -59,17 +53,8 @@ class Cafe(models.Model):
     medium_check = models.PositiveIntegerField(null=True, blank=True)
     features = models.ManyToManyField(to=Feature, blank=True)
     url = models.SlugField(max_length=255, unique=True)
-    type = models.CharField(
-        max_length=155,
-        choices=EstablishmentType.choices,
-        default=EstablishmentType.Cafe
-    )
-    cuisine = models.CharField(
-        max_length=155,
-        choices=Cuisine.choices,
-        null=True,
-        blank=True
-    )
+    type = models.ForeignKey(to=EstablishmentType, on_delete=models.CASCADE, related_name="cafes")
+    cuisine = models.ForeignKey(to=Cuisine, on_delete=models.CASCADE, related_name="cafes")
     metro = models.ForeignKey(
         to=Metro,
         on_delete=models.CASCADE,
@@ -109,7 +94,7 @@ def cafe_images_path(instance: "Gallery", filename: str) -> pathlib.Path:
 
 
 class Gallery(models.Model):
-    image = models.ImageField()
+    image = models.ImageField(upload_to=cafe_images_path)
     cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name="images")
 
     def __str__(self):
@@ -133,4 +118,4 @@ def review_images_path(instance: "ReviewImage", filename: str) -> pathlib.Path:
 
 class ReviewImage(models.Model):
     review = models.ForeignKey(to=Review, on_delete=models.CASCADE, related_name="images")
-    image = models.ImageField()
+    image = models.ImageField(upload_to=review_images_path)
