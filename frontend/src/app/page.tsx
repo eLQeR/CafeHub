@@ -1,95 +1,132 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { Slider } from '@/components/Slider';
+import styles from './page.module.scss';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
+  const places = [
+    {
+      id: 0,
+      img: '/data/1.jpg',
+      type: 'Ресторан',
+      link: '/restoran-mamay',
+      name: 'Mamay',
+      metro: 'Героев Днепра',
+      comments: 16,
+    },
+    {
+      id: 1,
+      img: '/data/2.jpg',
+      type: 'Ресторан',
+      link: '/restoran-la-maison',
+      name: 'Ресторан «La Maison»',
+      metro: 'Лукьяновская',
+      comments: 20,
+    },
+    {
+      id: 2,
+      img: '/data/3.jpg',
+      type: 'Ресторан',
+      link: '/restoran-gogi-dnprovska-nab',
+      name: 'Ресторан «Gogi Днепровская наб.»',
+      metro: 'Осокорки',
+      comments: 16,
+    },
+    {
+      id: 3,
+      img: '/data/4.jpg',
+      type: 'Ресторан',
+      link: '',
+      name: 'Ресторан «Porto Maltese (Порто Мальтезе)»',
+      metro: 'Арсенальная',
+      comments: 52,
+    },
+    {
+      id: 4,
+      img: '/data/5.jpg',
+      type: 'Ресторан',
+      link: '/restoran-porto-maltese',
+      name: 'Бистро Пекаря на Тарасовской',
+      metro: 'Олимпийская',
+      comments: 31,
+    },
+    {
+      id: 5,
+      img: '/data/5.jpg',
+      type: 'Ресторан',
+      link: '/restoran-bistro-pekarya-na-tarasovskoy',
+      name: 'Бистро Пекаря на Тарасовской',
+      metro: 'Олимпийская',
+      comments: 31,
+    },
+  ];
+  const places2 = [...places];
+
+  const filtersData = [
+    {
+      url: '/type:cafe;osobennost:detskaya-komnata,detskie-master-klassy,detskiy-stulchik,detskoe-menyu/',
+      imgUrl: '/img/kids-cafes2.jpg',
+      name: 'kids café',
+    },
+    {
+      url: '/type:bar;osobennost:zhivaya-muzyka/',
+      imgUrl: '/img/live-music-bars3.jpg',
+      name: 'live music bars',
+    },
+    {
+      url: '/kuhnja:burgeri,vegeterianskaja/',
+      imgUrl: '/img/vegan-burger.jpg',
+      name: 'Vegan burgers',
+    },
+  ];
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+    <>
+      <div className={styles.hero}>
+        <Image src='/hero.png' fill alt='logo' style={{ objectFit: 'cover' }} />
+        <div className={styles.hero__content}>
+          <h1 className={styles.hero__title}>
+            Find the best restaurants, cafes and bars in Kyiv city
+          </h1>
+          <div className={styles.hero__row}>
+            <input
+              type='text'
+              placeholder='Place name ...'
+              className={styles.hero__search}
             />
-          </a>
+            <button className={styles.hero__btn}>Search</button>
+          </div>
         </div>
       </div>
+      <div className={styles.page__container}>
+        <div className={styles.filters__top}>
+          <h3 className={styles.filters__title}>Collections for you</h3>
+        </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+        <div className={styles.filters}>
+          {filtersData.map((filterItem) => (
+            <Link
+              href={filterItem.url}
+              className={styles.filters__item}
+              key={filterItem.name}
+            >
+              <Image
+                src={filterItem.imgUrl}
+                fill
+                alt={filterItem.name}
+                style={{ objectFit: 'cover' }}
+              />
+
+              <p className={styles.filters__item_title}>{filterItem.name}</p>
+            </Link>
+          ))}
+        </div>
+
+        <Slider sliderTitle={'New places'} places={places} />
+        <Slider
+          sliderTitle={'Popular places'}
+          places={places2.sort((a, b) => b.comments - a.comments)}
         />
       </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </>
   );
 }
