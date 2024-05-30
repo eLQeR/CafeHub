@@ -1,6 +1,63 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from cafe_api.models import Cafe, Feature, Gallery, Contact, Review, ReviewImage, Metro
+from cafe_api.models import Cafe, Feature, Gallery, Contact, Review, ReviewImage, Metro, EstablishmentType, Cuisine
+
+
+class EstablishmentTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EstablishmentType
+        fields = ("id", "name", "slug")
+
+
+class CuisineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cuisine
+        fields = ("id", "name", "slug")
+
+
+class CafeCommentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cafe
+        fields = ("reviews",)
+
+
+class FeatureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feature
+        fields = ("id", "name")
+
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = ("phone",)
+
+
+class GallerySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gallery
+        fields = ("image",)
+
+
+class MetroSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Metro
+        fields = ("id", "name", "slug")
+
+
+class ReviewImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReviewImage
+        fields = ("image",)
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    images = ReviewImageSerializer(many=True, read_only=False)
+
+    class Meta:
+        model = Review
+        fields = ("id", "mark", "cafe", "description", "images")
+        extra_kwargs = {"cafe": {"write_only": True}}
 
 
 class CafeSerializer(serializers.ModelSerializer):
@@ -31,7 +88,6 @@ class CafeSerializer(serializers.ModelSerializer):
 
 
 class CafeListSerializer(CafeSerializer):
-
     class Meta:
         model = Cafe
         fields = (
@@ -41,63 +97,19 @@ class CafeListSerializer(CafeSerializer):
             "medium_check",
             "mark",
             "type",
-            "metro",
+            "url",
             "main_photo",
-            "reviews"
         )
 
 
-class CafeCommentsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cafe
-        fields = ("reviews", )
-
-
-class FeatureSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Feature
-        fields = ("id", "name")
-
-
-class ContactSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Contact
-        fields = ("phone", )
-
-
-class GallerySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Gallery
-        fields = ("image", )
-
-
-class MetroSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Metro
-        fields = ("id", "name", "slug")
-
-
-class ReviewImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ReviewImage
-        fields = ("image", )
-
-
-class ReviewSerializer(serializers.ModelSerializer):
-    images = ReviewImageSerializer(many=True, read_only=False)
-
-    class Meta:
-        model = Review
-        fields = ("id", "mark", "cafe", "description", "images")
-        extra_kwargs = {"cafe": {"write_only": True}}
-
-
 class CafeDetailSerializer(CafeSerializer):
-    contacts = serializers.SlugRelatedField(slug_field="phone", read_only=True, many=True)
     features = FeatureSerializer(many=True, read_only=True)
     images = GallerySerializer(many=True, read_only=True)
     metro = MetroSerializer(many=False, read_only=True)
     reviews = ReviewSerializer(many=True, read_only=True)
+    contacts = serializers.SlugRelatedField(slug_field="phone", read_only=True, many=True)
+    cuisine = serializers.CharField(source="cuisine.name", read_only=True)
+    type = serializers.CharField(source="type.name", read_only=True)
 
     class Meta:
         model = Cafe
@@ -119,6 +131,3 @@ class CafeDetailSerializer(CafeSerializer):
             "images",
             "reviews"
         )
-
-
-
