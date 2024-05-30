@@ -4,10 +4,10 @@ from django.utils.text import slugify
 from rest_framework import generics, mixins, viewsets
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
-from cafe_api.models import Cafe, Metro, Feature, LineOfMetro
+from cafe_api.models import Cafe, Metro, Feature, LineOfMetro, Cuisine, EstablishmentType
 from cafe_api.permissions import IsAdminOrReadOnly
 from cafe_api.serializers import CafeSerializer, CafeListSerializer, CafeDetailSerializer, FeatureSerializer, \
-    MetroSerializer, ReviewSerializer
+    MetroSerializer, ReviewSerializer, EstablishmentTypeSerializer, CuisineSerializer
 
 
 class CafeViewSet(viewsets.ModelViewSet):
@@ -61,7 +61,7 @@ class CafeViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(cuisine__in=cuisines)
         if feature_ids:
             feature_ids = self._params_to_ints(feature_ids)
-            queryset = queryset.filter(feature_ids__in=feature_ids)
+            queryset = queryset.filter(features__in=feature_ids)
         if metro_ids:
             metro_ids = self._params_to_ints(metro_ids)
             queryset = queryset.filter(metro_id__in=metro_ids)
@@ -81,8 +81,8 @@ def get_filters_view(request, *args, **kwargs):
                 "red": MetroSerializer(Metro.objects.filter(line__name="Червона"), many=True).data,
             },
             "features": FeatureSerializer(Feature.objects.all(), many=True).data,
-            "cafe_types": Cafe.EstablishmentType.choices,
-            "cuisine": Cafe.Cuisine.choices,
+            "cafe_types": EstablishmentTypeSerializer(EstablishmentType.objects.all(), many=True).data,
+            "cuisine": CuisineSerializer(Cuisine.objects.all(), many=True).data
         },
         status=200,
     )
