@@ -8,12 +8,14 @@ from cafe_api.models import Cafe, Metro, Feature, LineOfMetro, Cuisine, Establis
 from cafe_api.permissions import IsAdminOrReadOnly
 from cafe_api.serializers import CafeSerializer, CafeListSerializer, CafeDetailSerializer, FeatureSerializer, \
     MetroSerializer, ReviewSerializer, EstablishmentTypeSerializer, CuisineSerializer
+from rest_framework.pagination import PageNumberPagination
 
 
 class CafeViewSet(viewsets.ModelViewSet):
     queryset = Cafe.objects.all()
     serializer_class = CafeSerializer
     permission_classes = [IsAdminOrReadOnly]
+    pagination_class = PageNumberPagination
 
     @action(detail=True, methods=['GET'], url_path="get-reviews")
     def get_reviews(self, request, pk=None):
