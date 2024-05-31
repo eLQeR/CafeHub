@@ -28,11 +28,6 @@ class CafeViewSet(viewsets.ModelViewSet):
         return CafeSerializer
 
     @staticmethod
-    def _params_to_str_list(qs: str):
-        """Converts a string slugs to a list of strings"""
-        return [str_id for str_id in qs.split(",")]
-
-    @staticmethod
     def _params_to_ints(qs):
         """Converts a list of string IDs to a list of integers"""
         try:
@@ -44,8 +39,8 @@ class CafeViewSet(viewsets.ModelViewSet):
         queryset = self.queryset
         name = self.request.query_params.get("name", None)
         address = self.request.query_params.get("address", None)
-        types = self.request.query_params.get("types", None)
-        cuisines = self.request.query_params.get("cuisines", None)
+        type_ids = self.request.query_params.get("types", None)
+        cuisine_ids = self.request.query_params.get("cuisines", None)
         metro_ids = self.request.query_params.get("metroes", None)
         feature_ids = self.request.query_params.get("features", None)
 
@@ -53,18 +48,18 @@ class CafeViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(name__icontains=name)
         if address:
             queryset = queryset.filter(address__icontains=address)
-        if types:
-            types = self._params_to_str_list(types)
-            queryset = queryset.filter(type__in=types)
-        if cuisines:
-            cuisines = self._params_to_str_list(cuisines)
+        if type_ids:
+            type_ids = self._params_to_ints(type_ids)
+            queryset = queryset.filter(type__in=type_ids)
+        if cuisine_ids:
+            cuisines = self._params_to_ints(cuisine_ids)
             queryset = queryset.filter(cuisine__in=cuisines)
         if feature_ids:
             feature_ids = self._params_to_ints(feature_ids)
             queryset = queryset.filter(features__in=feature_ids)
         if metro_ids:
             metro_ids = self._params_to_ints(metro_ids)
-            queryset = queryset.filter(metro_id__in=metro_ids)
+            queryset = queryset.filter(metro__in=metro_ids)
 
         return queryset.distinct().annotate(
             mark=(Avg("reviews__mark"))
@@ -76,9 +71,9 @@ def get_filters_view(request, *args, **kwargs):
     return Response(
         {
             "metro": {
-                "green": MetroSerializer(Metro.objects.filter(line__name="Зелена"), many=True).data,
-                "blue": MetroSerializer(Metro.objects.filter(line__name="Синя"), many=True).data,
-                "red": MetroSerializer(Metro.objects.filter(line__name="Червона"), many=True).data,
+                "green": MetroSerializer(Metro.objects.filter(line__name=1), many=True).data,
+                "red": MetroSerializer(Metro.objects.filter(line_id=2), many=True).data,
+                "blue": MetroSerializer(Metro.objects.filter(line_id=3), many=True).data,
             },
             "features": FeatureSerializer(Feature.objects.all(), many=True).data,
             "cafe_types": EstablishmentTypeSerializer(EstablishmentType.objects.all(), many=True).data,
