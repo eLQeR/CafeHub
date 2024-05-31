@@ -61,11 +61,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class CafeSerializer(serializers.ModelSerializer):
-    mark = serializers.IntegerField(
-        min_value=1,
-        max_value=5,
-        read_only=True
-    )
+    mark = serializers.FloatField(read_only=True)
 
     class Meta:
         model = Cafe
@@ -88,6 +84,8 @@ class CafeSerializer(serializers.ModelSerializer):
 
 
 class CafeListSerializer(CafeSerializer):
+    type = serializers.CharField(source="type.name", read_only=True)
+
     class Meta:
         model = Cafe
         fields = (
