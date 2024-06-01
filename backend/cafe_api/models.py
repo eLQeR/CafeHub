@@ -49,6 +49,7 @@ class Cafe(models.Model):
     city = models.CharField(max_length=155)
     address = models.CharField(max_length=155)
     email = models.EmailField(max_length=155)
+    phone_number = models.IntegerField(null=False, blank=False, default=+380111111111)
     data_created = models.DateField()
     medium_check = models.PositiveIntegerField(null=True, blank=True)
     features = models.ManyToManyField(to=Feature, blank=True)
