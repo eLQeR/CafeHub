@@ -101,6 +101,21 @@ class Gallery(models.Model):
         return f"{self.cafe.name} - {self.image.name}"
 
 
+class CafeWorkingHours(models.Model):
+    WEEKDAYS = [
+        ('MON', 'Monday'),
+        ('TUE', 'Tuesday'),
+        ('WED', 'Wednesday'),
+        ('THU', 'Thursday'),
+        ('FRI', 'Friday'),
+        ('SAT', 'Saturday'),
+        ('SUN', 'Sunday'),
+    ]
+
+    cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name='working_hours')
+    weekday = models.CharField(max_length=3, choices=WEEKDAYS)
+
+
 class Review(models.Model):
     mark = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name="reviews")
