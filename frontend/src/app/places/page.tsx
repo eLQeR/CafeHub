@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { PlacesFilters } from '@/components/PlacesFilters';
-import { Place, getPlaces } from '@/lib/getPlaces';
+import { Place, getPlaces } from '@/services/getPlaces';
 
 const Places = () => {
   const searchParams = useSearchParams();

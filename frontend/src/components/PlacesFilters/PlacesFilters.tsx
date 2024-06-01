@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
-import { getFilters, Filter } from '@/lib/getPlaces';
+import { getFilters, Filter } from '@/services/getPlaces';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { MetroLines } from '@/lib/constants';
+import { MetroLines } from '@/services/constants';
 import styles from './PlacesFilters.module.scss';
 
 export const PlacesFilters = () => {
