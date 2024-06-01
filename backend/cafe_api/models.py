@@ -118,6 +118,8 @@ class CafeWorkingHours(models.Model):
     open_hour = models.TimeField()
     close_hour = models.TimeField()
 
+    def __str__(self):
+        return f"{self.open_hour}, {self.close_hour}"
 
 
 class Review(models.Model):
