@@ -54,7 +54,7 @@ class ReviewImageSerializer(serializers.ModelSerializer):
 class CafeWorkingHoursSerializer(serializers.ModelSerializer):
     class Meta:
         model = CafeWorkingHours
-        fields = ("open_hour", "close_hour")
+        fields = ("id", "cafe", "weekday", "open_hour", "close_hour")
 
 
 class ReviewSerializer(serializers.ModelSerializer):
