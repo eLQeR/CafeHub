@@ -1,0 +1,89 @@
+.filters {
+  // height: 100vh;
+  background-color: rgba(255, 235, 205, 0.363);
+  width: 22%;
+  padding: 10px;
+
+  &__title {
+    color: #57606a;
+    font-size: 18px;
+    line-height: 17px;
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+  &__subBlock {
+    padding: 0;
+    overflow-y: auto;
+    max-height: 0;
+    margin: 0;
+    transition: max-height 0.3s ease-out;
+
+    &_active {
+      max-height: 300px;
+    }
+  }
+  &__section {
+    border: 1px solid #c1c3c4;
+    margin-bottom: 10px;
+    &_title {
+      color: #57606a;
+      line-height: 17px;
+      text-transform: uppercase;
+      margin: 10px;
+    }
+    &_list {
+      padding: 0;
+      overflow-y: auto;
+      max-height: 350px;
+      margin: 10px;
+    }
+  }
+  &__block {
+    &_title {
+      color: #535252;
+      display: flex;
+      align-items: center;
+      padding: 10px 5px;
+      justify-content: space-between;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #d3d0d0;
+      }
+    }
+    &_btn {
+      width: 20px;
+      height: 20px;
+      transform: rotate(90deg);
+      cursor: pointer;
+      border: none;
+      background-color: transparent;
+      background-image: url('../../../public/img/svg/arrow.svg');
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      transition: transform 0.3s linear;
+      &_active {
+        transform: rotate(-90deg);
+      }
+    }
+  }
+
+  &__link {
+    text-decoration: none;
+    &_text {
+      color: #000;
+      cursor: pointer;
+    }
+    &_check {
+      margin-right: 5px;
+      cursor: pointer;
+    }
+    &_item {
+      list-style: none;
+      &:hover {
+        background-color: #c1c3c4;
+      }
+    }
+  }
+}

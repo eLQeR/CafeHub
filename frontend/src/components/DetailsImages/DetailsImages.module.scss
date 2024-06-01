@@ -1,0 +1,68 @@
+.gallery {
+  &__top {
+    height: 480px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  &__bot {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    position: relative;
+  }
+  &__items {
+    display: flex;
+    // gap: 10px;
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
+    scroll-behavior: smooth;
+  }
+  &__item {
+    // min-width: calc((100% - 30px) / 4);
+    min-width: 25%;
+    height: 120px;
+    position: relative;
+    border-left: 10px solid white;
+    &:hover {
+      // scale: 1.1;
+    }
+    &:nth-child(1) {
+      border-left: none;
+    }
+  }
+  &__item > img {
+    cursor: pointer;
+    // border-radius: 50%;
+  }
+
+  &__btn {
+    border: 1px solid rgba(128, 128, 128, 0.7);
+    background-color: rgba(128, 128, 128, 0.1);
+    cursor: pointer;
+    position: absolute;
+    width: 40px;
+    height: 100%;
+    z-index: 1;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url('/img/svg/arrow-black.svg');
+
+    &_prev {
+      left: 0;
+      border-right: none;
+      transform: rotate(180deg);
+    }
+    &_next {
+      right: 0;
+      border-left: none;
+    }
+    &:hover {
+      background-color: rgba(128, 128, 128, 0.6);
+    }
+    &:disabled {
+      background-image: url('/img/svg/arrow.svg');
+    }
+  }
+}

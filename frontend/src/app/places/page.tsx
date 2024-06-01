@@ -1,93 +1,58 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './places.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import classNames from 'classnames';
-import { PLACELIST, FILTERS } from '../../lib/constants';
-import { getPlaces } from '@/lib/getPlaces';
+import { PlacesFilters } from '@/components/PlacesFilters';
+import { Place, getPlaces } from '@/lib/getPlaces';
 
 const Places = () => {
-  const [openGroupId, setOpenGroupId] = useState<null | string>(null);
-
   const searchParams = useSearchParams();
-  const selectedMetro = searchParams.get('metro')?.split(',') || [];
 
-  const handleToggle = (groupId: string) => {
-    setOpenGroupId((prevGroupId) => (prevGroupId === groupId ? null : groupId));
-  };
-  // const arr = getPlaces();
-  // console.log('ARR:', arr);
+  // console.log('SP:', searchParams);
+
+  // const selectedMetro = searchParams.get('metro')?.split(',') || [];
+  // const selectedFeatures = searchParams.get('features')?.split(',') || [];
+  // const selectedCuisines = searchParams.get('cuisine')?.split(',') || [];
+  // console.log('1', selectedTypes);
+
+  // if (selectedTypes.length > 0) {
+  //   let params = '?types=' + selectedTypes.join(',');
+  //   console.log('PARAMS:', params);
+  // }
+
+  // const selectedTypes = searchParams.get('types')?.split(',') || [];
+  const [places, setPlaces] = useState<Place[] | []>([]);
+
+  useEffect(() => {
+    const typesParam = searchParams.get('types');
+    const selectedTypes = typesParam ? typesParam.split(',') : [];
+
+    // console.log('LE', selectedTypes.length);
+    if (selectedTypes.length > 0) {
+      let params = '?types=' + selectedTypes.join(',');
+      // console.log('PARAMS:', params);
+      getPlaces(params).then((data) => {
+        setPlaces(data);
+      });
+    } else {
+      getPlaces().then((data) => {
+        setPlaces(data);
+      });
+    }
+  }, [searchParams]);
+
+  // useEffect(() => {
+  //   getPlaces().then((data) => {
+  //     setPlaces(data);
+  //   });
+  // }, []);
 
   return (
-    <div className={styles.page__container}>
+    <main className={styles.page__container}>
       <div className={styles.page__content}>
-        <aside className={styles.filters}>
-          <p className={styles.filters__title}>filters</p>
-          {FILTERS.lines.map((line) => (
-            <div key={line.ID} className={styles.filters__block}>
-              <div
-                className={styles.filters__block_title}
-                onClick={() => {
-                  handleToggle(line.ID);
-                }}
-              >
-                <span>{line.NAME}</span>{' '}
-                <button
-                  className={classNames(styles.filters__block_btn, {
-                    [styles.filters__block_btn_active]: openGroupId === line.ID,
-                  })}
-                ></button>
-              </div>
-              <ul
-                className={classNames(styles.filters__subBlock, {
-                  [styles.filters__subBlock_active]: openGroupId === line.ID,
-                })}
-              >
-                {line.SUBWAYS.map((sub) => {
-                  let metroParams = [...(selectedMetro || [])];
-                  if (metroParams.includes(sub.SLUG)) {
-                    metroParams = metroParams.filter(
-                      (station) => station !== sub.SLUG
-                    );
-                  } else {
-                    metroParams.push(sub.SLUG);
-                  }
-                  let linkUrl = `?metro=${metroParams}`;
-                  if (linkUrl === '?metro=') {
-                    linkUrl = '/places';
-                  }
-                  return (
-                    <Link
-                      key={sub.ID}
-                      href={linkUrl}
-                      className={styles.filters__link}
-                    >
-                      <li className={styles.filters__link_item}>
-                        <input
-                          value={sub.ID}
-                          id={`subway_${sub.ID}`}
-                          type='checkbox'
-                          data-title={sub.NAME}
-                          checked={selectedMetro?.includes(sub.SLUG)}
-                          onChange={() => {}}
-                          className={styles.filters__link_check}
-                        ></input>
-                        <label
-                          htmlFor={`subway_${sub.ID}`}
-                          className={styles.filters__link_text}
-                        >
-                          {sub.NAME}
-                        </label>
-                      </li>
-                    </Link>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-        </aside>
+        <PlacesFilters />
         <div className={styles.catalog}>
           <div className={styles.catalog__top}>
             <h2 className={styles.catalog__title}>
@@ -105,16 +70,17 @@ const Places = () => {
             </div>
           </div>
           <div className={styles.catalog__list}>
-            {PLACELIST.map((place) => {
+            {places.map((place) => {
               return (
                 <Link
-                  href={place.link}
+                  href={`places${place.id}`} //--------------
                   className={styles.catalog__item}
                   key={place.id}
                 >
                   <div className={styles.catalog__item_imageContainer}>
                     <Image
-                      src={place.img}
+                      // src={place.main_photo}
+                      src={`/data/1.jpg`}
                       fill
                       alt={`main image ${place.type} ${place.name}`}
                     ></Image>
@@ -150,7 +116,7 @@ const Places = () => {
                         <div className={styles.stars}>
                           <div
                             className={styles.stars__bg}
-                            style={{ width: `${place.rating * 20}%` }}
+                            style={{ width: `${place.mark * 20}%` }}
                           ></div>
                           <Image
                             src={'/img/star.png'}
@@ -200,7 +166,7 @@ const Places = () => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

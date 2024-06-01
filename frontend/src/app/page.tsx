@@ -97,7 +97,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className={styles.page__container}>
+      <main className={styles.page__container}>
         <div className={styles.filters__top}>
           <h3 className={styles.filters__title}>Collections for you</h3>
         </div>
@@ -126,7 +126,7 @@ export default function Home() {
           sliderTitle={'Popular places'}
           places={places2.sort((a, b) => b.comments - a.comments)}
         />
-      </div>
+      </main>
     </>
   );
 }
