@@ -1,9 +1,18 @@
 from django.contrib import admin
 from cafe_api.models import Cafe, Contact, Feature, Gallery, Review, Metro, LineOfMetro, ReviewImage, CafeWorkingHours
 
-models = [Contact, Feature, Metro, LineOfMetro, CafeWorkingHours]
+models = [Contact, Feature, Metro, LineOfMetro]
 for model in models:
     admin.site.register(model)
+
+
+class CafeWorkingHoursAdmin(admin.ModelAdmin):
+    list_display = ('cafe', 'weekday', 'open_hour', 'close_hour')
+    list_filter = ('weekday', 'cafe')
+
+
+admin.site.register(CafeWorkingHours, CafeWorkingHoursAdmin)
+
 
 class ReviewImageInline(admin.TabularInline):
     fk_name = 'review'
