@@ -114,6 +114,9 @@ class CafeWorkingHours(models.Model):
 
     cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name='working_hours')
     weekday = models.CharField(max_length=3, choices=WEEKDAYS)
+    open_hour = models.TimeField()
+    close_hour = models.TimeField()
+
 
 
 class Review(models.Model):
