@@ -4,21 +4,30 @@ from django.utils.text import slugify
 from rest_framework import generics, mixins, viewsets
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
-from cafe_api.models import Cafe, Metro, Feature, LineOfMetro, Cuisine, EstablishmentType
+from cafe_api.models import Cafe, Metro, Feature, LineOfMetro, Cuisine, EstablishmentType, CafeWorkingHours
 from cafe_api.permissions import IsAdminOrReadOnly
 from cafe_api.serializers import CafeSerializer, CafeListSerializer, CafeDetailSerializer, FeatureSerializer, \
-    MetroSerializer, ReviewSerializer, EstablishmentTypeSerializer, CuisineSerializer
+    MetroSerializer, ReviewSerializer, EstablishmentTypeSerializer, CuisineSerializer, CafeWorkingHoursSerializer
+from rest_framework.pagination import PageNumberPagination
 
 
 class CafeViewSet(viewsets.ModelViewSet):
     queryset = Cafe.objects.all()
     serializer_class = CafeSerializer
     permission_classes = [IsAdminOrReadOnly]
+    pagination_class = PageNumberPagination
 
     @action(detail=True, methods=['GET'], url_path="get-reviews")
     def get_reviews(self, request, pk=None):
         cafe = self.get_object()
         return Response(ReviewSerializer(cafe.reviews.all(), many=True).data, status=200)
+
+    @action(detail=True, methods=['GET'], url_path="get-working-hours")
+    def get_working_hours(self, request, pk=None):
+        cafe = self.get_object()
+        working_hours = CafeWorkingHours.objects.filter(cafe=cafe)
+        serializer = CafeWorkingHoursSerializer(working_hours, many=True)
+        return Response(serializer.data, status=200)
 
     def get_serializer_class(self):
         if self.action == 'list':

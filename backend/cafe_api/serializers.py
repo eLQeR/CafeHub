@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from cafe_api.models import Cafe, Feature, Gallery, Contact, Review, ReviewImage, Metro, EstablishmentType, Cuisine
+from cafe_api.models import Cafe, Feature, Gallery, Contact, Review, ReviewImage, Metro, EstablishmentType, Cuisine, CafeWorkingHours
 
 
 class EstablishmentTypeSerializer(serializers.ModelSerializer):
@@ -49,6 +49,12 @@ class ReviewImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReviewImage
         fields = ("image",)
+
+
+class CafeWorkingHoursSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CafeWorkingHours
+        fields = ("id", "cafe", "weekday", "open_hour", "close_hour")
 
 
 class ReviewSerializer(serializers.ModelSerializer):

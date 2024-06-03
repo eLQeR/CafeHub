@@ -49,6 +49,7 @@ class Cafe(models.Model):
     city = models.CharField(max_length=155)
     address = models.CharField(max_length=155)
     email = models.EmailField(max_length=155)
+    phone_number = models.IntegerField(null=False, blank=False, default=+380111111111)
     data_created = models.DateField()
     medium_check = models.PositiveIntegerField(null=True, blank=True)
     features = models.ManyToManyField(to=Feature, blank=True)
@@ -99,6 +100,26 @@ class Gallery(models.Model):
 
     def __str__(self):
         return f"{self.cafe.name} - {self.image.name}"
+
+
+class CafeWorkingHours(models.Model):
+    WEEKDAYS = [
+        ('MON', 'Monday'),
+        ('TUE', 'Tuesday'),
+        ('WED', 'Wednesday'),
+        ('THU', 'Thursday'),
+        ('FRI', 'Friday'),
+        ('SAT', 'Saturday'),
+        ('SUN', 'Sunday'),
+    ]
+
+    cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name='working_hours')
+    weekday = models.CharField(max_length=3, choices=WEEKDAYS)
+    open_hour = models.TimeField()
+    close_hour = models.TimeField()
+
+    def __str__(self):
+        return f"{self.open_hour}, {self.close_hour}"
 
 
 class Review(models.Model):
