@@ -5,7 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { PlacesFilters } from '@/components/PlacesFilters';
-import { Place, getPlaces } from '@/lib/getPlaces';
+import { getPlaces } from '@/services/getPlaces';
+import { Place } from '@/types/types';
 
 const Places = () => {
   const searchParams = useSearchParams();
@@ -29,18 +30,41 @@ const Places = () => {
     const typesParam = searchParams.get('types');
     const selectedTypes = typesParam ? typesParam.split(',') : [];
 
-    // console.log('LE', selectedTypes.length);
-    if (selectedTypes.length > 0) {
-      let params = '?types=' + selectedTypes.join(',');
-      // console.log('PARAMS:', params);
-      getPlaces(params).then((data) => {
-        setPlaces(data);
-      });
-    } else {
-      getPlaces().then((data) => {
-        setPlaces(data);
-      });
+    const featuresParam = searchParams.get('features');
+    const selectedFeatures = featuresParam ? featuresParam.split(',') : [];
+
+    const cuisinesParam = searchParams.get('cuisine');
+    const selectedCuisines = cuisinesParam ? cuisinesParam.split(',') : [];
+
+    let params = '';
+    if (
+      selectedTypes.length > 0 ||
+      selectedFeatures.length > 0 ||
+      selectedCuisines.length > 0
+    ) {
+      params += '?';
     }
+    if (selectedTypes.length > 0) {
+      params += 'types=' + selectedTypes.join(',');
+    }
+    if (params.length > 1) {
+      params += '&';
+    }
+    if (selectedFeatures.length > 0) {
+      params += 'features=' + selectedFeatures.join(',');
+    }
+    if (params.length > 1) {
+      params += '&';
+    }
+    if (selectedCuisines.length > 0) {
+      params += 'cuisines=' + selectedCuisines.join(',');
+    }
+
+    // console.log('PARAMS:', params);
+
+    getPlaces(params).then((data) => {
+      setPlaces(data);
+    });
   }, [searchParams]);
 
   // useEffect(() => {
@@ -73,7 +97,7 @@ const Places = () => {
             {places.map((place) => {
               return (
                 <Link
-                  href={`places${place.id}`} //--------------
+                  href={`places/${place.id}`} //--------------
                   className={styles.catalog__item}
                   key={place.id}
                 >

@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
-import { getFilters, Filter } from '@/lib/getPlaces';
+import { getFilters } from '@/services/getPlaces';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { MetroLines } from '@/lib/constants';
+import { MetroLines } from '@/services/constants';
 import styles from './PlacesFilters.module.scss';
+import { Filter } from '@/types/types';
 
 export const PlacesFilters = () => {
   const [openGroupId, setOpenGroupId] = useState<null | number>(null);
@@ -30,7 +31,11 @@ export const PlacesFilters = () => {
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
+      if (value === '') {
+        params.delete(name);
+      } else {
+        params.set(name, value);
+      }
 
       return params.toString();
     },
@@ -208,23 +213,23 @@ export const PlacesFilters = () => {
         <p className={styles.filters__section_title}>Places types:</p>
         <ul className={styles.filters__section_list}>
           {filters?.cafe_types.map((type) => {
-            let featuresParams = [...(selectedTypes || [])];
+            let typesParams = [...(selectedTypes || [])];
 
-            if (featuresParams.includes(type.id.toString())) {
-              featuresParams = featuresParams.filter(
+            if (typesParams.includes(type.id.toString())) {
+              typesParams = typesParams.filter(
                 (station) => station !== type.id.toString()
               );
             } else {
-              featuresParams.push(type.id.toString());
+              typesParams.push(type.id.toString());
             }
             let linkUrl =
               pathname +
               '?' +
-              createQueryString('types', featuresParams.join(','));
+              createQueryString('types', typesParams.join(','));
 
-            if (featuresParams.length === 0) {
-              linkUrl = pathname;
-            }
+            // if (typesParams.length === 0) {
+            //   linkUrl = pathname;
+            // }
             return (
               <Link
                 key={type.id}
@@ -260,6 +265,7 @@ export const PlacesFilters = () => {
         <ul className={styles.filters__section_list}>
           {filters?.features.map((feature) => {
             let featuresParams = [...(selectedFeatures || [])];
+
             if (featuresParams.includes(feature.id.toString())) {
               featuresParams = featuresParams.filter(
                 (station) => station !== feature.id.toString()
@@ -268,15 +274,19 @@ export const PlacesFilters = () => {
               featuresParams.push(feature.id.toString());
             }
 
-            let linkUrl = createQueryString(
-              'features',
-              featuresParams.join(',')
-            );
+            let linkUrl =
+              pathname +
+              '?' +
+              createQueryString('features', featuresParams.join(','));
+
+            // if (featuresParams.length === 0) {
+            //   linkUrl = pathname;
+            // }
 
             return (
               <Link
                 key={feature.id}
-                href={pathname + '?' + linkUrl}
+                href={linkUrl}
                 className={styles.filters__link}
               >
                 <li className={styles.filters__link_item}>
@@ -307,28 +317,33 @@ export const PlacesFilters = () => {
         <p className={styles.filters__section_title}>Places cuisines:</p>
         <ul className={styles.filters__section_list}>
           {filters?.cuisine.map((type) => {
-            let featuresParams = [...(selectedCuisines || [])];
-            if (featuresParams.includes(type.slug)) {
-              featuresParams = featuresParams.filter(
-                (station) => station !== type.slug
+            let cuisinesParams = [...(selectedCuisines || [])];
+            if (cuisinesParams.includes(type.id.toString())) {
+              cuisinesParams = cuisinesParams.filter(
+                (station) => station !== type.id.toString()
               );
             } else {
-              featuresParams.push(type.slug);
+              cuisinesParams.push(type.id.toString());
             }
-            // let linkUrl = `?cuisine=${featuresParams}`;
-            // if (linkUrl === '?cuisine=') {
-            //   linkUrl = '/places';
+
+            let linkUrl =
+              pathname +
+              '?' +
+              createQueryString('cuisine', cuisinesParams.join(','));
+
+            // if (cuisinesParams.length === 0) {
+            //   linkUrl = pathname;
             // }
-            let linkUrl = createQueryString(
-              'cuisine',
-              featuresParams.join(',')
-            );
+            // let linkUrl = createQueryString(
+            //   'cuisine',
+            //   featuresParams.join(',')
+            // );
             return (
               <Link
                 key={type.id}
-                // href={linkUrl}
+                href={linkUrl}
                 // href={pathname + '?' + createQueryString('cuisine', type.slug)}
-                href={pathname + '?' + linkUrl}
+                // href={pathname + '?' + linkUrl}
                 className={styles.filters__link}
               >
                 <li className={styles.filters__link_item}>
@@ -337,7 +352,7 @@ export const PlacesFilters = () => {
                     id={type.slug}
                     type='checkbox'
                     data-title={type.slug}
-                    checked={selectedCuisines?.includes(type.slug)}
+                    checked={selectedCuisines?.includes(type.id.toString())}
                     onChange={() => {}}
                     className={styles.filters__link_check}
                   ></input>

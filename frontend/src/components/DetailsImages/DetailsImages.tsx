@@ -2,14 +2,16 @@
 import Image from 'next/image';
 import s from './DetailsImages.module.scss';
 import { useRef, useState } from 'react';
+import { DetailsImage } from '@/types/types';
 
 type Props = {
   name: string;
-  images: string[];
+  images: DetailsImage[];
 };
 
 export const DetailsImages: React.FC<Props> = ({ name, images }) => {
-  const [mainImg, setMainImg] = useState(images[0]);
+  console.log('IMG', images);
+  const [mainImg, setMainImg] = useState(images[0]?.image || '');
 
   const slider = useRef<HTMLDivElement>(null);
   const cell = useRef<HTMLDivElement>(null);
@@ -27,7 +29,7 @@ export const DetailsImages: React.FC<Props> = ({ name, images }) => {
       setActiveArrowRight(true);
       const currentScroll = slider.current.scrollLeft;
 
-      slider.current.scrollTo(currentScroll - sliderItemWidth , 0);
+      slider.current.scrollTo(currentScroll - sliderItemWidth, 0);
       if (currentScroll - sliderItemWidth <= 0) {
         setActiveArrowLeft(false);
       }
@@ -48,6 +50,7 @@ export const DetailsImages: React.FC<Props> = ({ name, images }) => {
       }
     }
   };
+
   return (
     <div className={s.gallery}>
       <div className={s.gallery__top}>
@@ -66,14 +69,14 @@ export const DetailsImages: React.FC<Props> = ({ name, images }) => {
         ></button>
         <div className={s.gallery__items} ref={slider}>
           {images.map((img) => (
-            <div key={img} className={s.gallery__item} ref={cell}>
+            <div key={img.image} className={s.gallery__item} ref={cell}>
               <Image
-                src={img}
+                src={img.image}
                 fill
                 alt={`place ${name} main photo`}
                 objectFit='cover'
                 onClick={() => {
-                  setMainImg(img);
+                  setMainImg(img.image);
                 }}
               ></Image>
             </div>
