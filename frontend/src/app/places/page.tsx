@@ -27,6 +27,9 @@ const Places = () => {
   const [places, setPlaces] = useState<Place[] | []>([]);
 
   useEffect(() => {
+    const metrosParam = searchParams.get('metroes');
+    const selectedMetros = metrosParam ? metrosParam.split(',') : [];
+
     const typesParam = searchParams.get('types');
     const selectedTypes = typesParam ? typesParam.split(',') : [];
 
@@ -40,7 +43,8 @@ const Places = () => {
     if (
       selectedTypes.length > 0 ||
       selectedFeatures.length > 0 ||
-      selectedCuisines.length > 0
+      selectedCuisines.length > 0 ||
+      selectedMetros.length > 0
     ) {
       params += '?';
     }
@@ -59,8 +63,14 @@ const Places = () => {
     if (selectedCuisines.length > 0) {
       params += 'cuisines=' + selectedCuisines.join(',');
     }
+    if (params.length > 1) {
+      params += '&';
+    }
+    if (selectedMetros.length > 0) {
+      params += 'metroes=' + selectedMetros.join(',');
+    }
 
-    // console.log('PARAMS:', params);
+    console.log('PARAMS:', params);
 
     getPlaces(params).then((data) => {
       setPlaces(data);

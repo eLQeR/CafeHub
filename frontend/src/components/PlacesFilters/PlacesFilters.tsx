@@ -12,7 +12,7 @@ export const PlacesFilters = () => {
   const [filters, setFilters] = useState<undefined | Filter>(undefined);
 
   const searchParams = useSearchParams();
-  const selectedMetro = searchParams.get('metro')?.split(',') || [];
+  const selectedMetro = searchParams.get('metroes')?.split(',') || [];
   const selectedFeatures = searchParams.get('features')?.split(',') || [];
   const selectedTypes = searchParams.get('types')?.split(',') || [];
   const selectedCuisines = searchParams.get('cuisine')?.split(',') || [];
@@ -77,17 +77,20 @@ export const PlacesFilters = () => {
                     <>
                       {filters.metro['red'].map((sub) => {
                         let metroParams = [...(selectedMetro || [])];
-                        if (metroParams.includes(sub.slug)) {
+
+                        if (metroParams.includes(sub.id.toString())) {
                           metroParams = metroParams.filter(
-                            (station) => station !== sub.slug
+                            (station) => station !== sub.id.toString()
                           );
                         } else {
-                          metroParams.push(sub.slug);
+                          metroParams.push(sub.id.toString());
                         }
-                        let linkUrl = `?metro=${metroParams}`;
-                        if (linkUrl === '?metro=') {
-                          linkUrl = '/places';
-                        }
+
+                        let linkUrl =
+                          pathname +
+                          '?' +
+                          createQueryString('metroes', metroParams.join(','));
+
                         return (
                           <Link
                             key={sub.id}
@@ -100,8 +103,9 @@ export const PlacesFilters = () => {
                                 id={`subway_${sub.id}`}
                                 type='checkbox'
                                 data-title={sub.name}
-                                checked={selectedMetro?.includes(sub.slug)}
-                                onChange={() => {}}
+                                checked={selectedMetro?.includes(
+                                  sub.id.toString()
+                                )}
                                 className={styles.filters__link_check}
                               ></input>
                               <label
@@ -120,17 +124,20 @@ export const PlacesFilters = () => {
                     <>
                       {filters.metro['blue'].map((sub) => {
                         let metroParams = [...(selectedMetro || [])];
-                        if (metroParams.includes(sub.slug)) {
+
+                        if (metroParams.includes(sub.id.toString())) {
                           metroParams = metroParams.filter(
-                            (station) => station !== sub.slug
+                            (station) => station !== sub.id.toString()
                           );
                         } else {
-                          metroParams.push(sub.slug);
+                          metroParams.push(sub.id.toString());
                         }
-                        let linkUrl = `?metro=${metroParams}`;
-                        if (linkUrl === '?metro=') {
-                          linkUrl = '/places';
-                        }
+
+                        let linkUrl =
+                          pathname +
+                          '?' +
+                          createQueryString('metroes', metroParams.join(','));
+
                         return (
                           <Link
                             key={sub.id}
@@ -143,8 +150,9 @@ export const PlacesFilters = () => {
                                 id={`subway_${sub.id}`}
                                 type='checkbox'
                                 data-title={sub.name}
-                                checked={selectedMetro?.includes(sub.slug)}
-                                onChange={() => {}}
+                                checked={selectedMetro?.includes(
+                                  sub.id.toString()
+                                )}
                                 className={styles.filters__link_check}
                               ></input>
                               <label
@@ -163,17 +171,20 @@ export const PlacesFilters = () => {
                     <>
                       {filters.metro['green'].map((sub) => {
                         let metroParams = [...(selectedMetro || [])];
-                        if (metroParams.includes(sub.slug)) {
+
+                        if (metroParams.includes(sub.id.toString())) {
                           metroParams = metroParams.filter(
-                            (station) => station !== sub.slug
+                            (station) => station !== sub.id.toString()
                           );
                         } else {
-                          metroParams.push(sub.slug);
+                          metroParams.push(sub.id.toString());
                         }
-                        let linkUrl = `?metro=${metroParams}`;
-                        if (linkUrl === '?metro=') {
-                          linkUrl = '/places';
-                        }
+
+                        let linkUrl =
+                          pathname +
+                          '?' +
+                          createQueryString('metroes', metroParams.join(','));
+
                         return (
                           <Link
                             key={sub.id}
@@ -186,8 +197,9 @@ export const PlacesFilters = () => {
                                 id={`subway_${sub.id}`}
                                 type='checkbox'
                                 data-title={sub.name}
-                                checked={selectedMetro?.includes(sub.slug)}
-                                onChange={() => {}}
+                                checked={selectedMetro?.includes(
+                                  sub.id.toString()
+                                )}
                                 className={styles.filters__link_check}
                               ></input>
                               <label
@@ -227,9 +239,6 @@ export const PlacesFilters = () => {
               '?' +
               createQueryString('types', typesParams.join(','));
 
-            // if (typesParams.length === 0) {
-            //   linkUrl = pathname;
-            // }
             return (
               <Link
                 key={type.id}
@@ -279,10 +288,6 @@ export const PlacesFilters = () => {
               '?' +
               createQueryString('features', featuresParams.join(','));
 
-            // if (featuresParams.length === 0) {
-            //   linkUrl = pathname;
-            // }
-
             return (
               <Link
                 key={feature.id}
@@ -331,19 +336,10 @@ export const PlacesFilters = () => {
               '?' +
               createQueryString('cuisine', cuisinesParams.join(','));
 
-            // if (cuisinesParams.length === 0) {
-            //   linkUrl = pathname;
-            // }
-            // let linkUrl = createQueryString(
-            //   'cuisine',
-            //   featuresParams.join(',')
-            // );
             return (
               <Link
                 key={type.id}
                 href={linkUrl}
-                // href={pathname + '?' + createQueryString('cuisine', type.slug)}
-                // href={pathname + '?' + linkUrl}
                 className={styles.filters__link}
               >
                 <li className={styles.filters__link_item}>
