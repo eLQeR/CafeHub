@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { useCallback, useEffect, useState } from 'react';
-import { getFilters } from '@/services/getPlaces';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { MetroLines } from '@/services/constants';
-import styles from './PlacesFilters.module.scss';
+import { useCallback, useEffect, useState } from 'react';
 import { Filter } from '@/types/types';
+import { getFilters } from '@/services/getPlaces';
+import { MetroLines } from '@/services/constants';
+import { usePathname, useSearchParams } from 'next/navigation';
+import styles from './PlacesFilters.module.scss';
 
 export const PlacesFilters = () => {
   const [openGroupId, setOpenGroupId] = useState<null | number>(null);
@@ -103,6 +103,7 @@ export const PlacesFilters = () => {
                                 id={`subway_${sub.id}`}
                                 type='checkbox'
                                 data-title={sub.name}
+                                onChange={() => {}}
                                 checked={selectedMetro?.includes(
                                   sub.id.toString()
                                 )}
@@ -153,6 +154,7 @@ export const PlacesFilters = () => {
                                 checked={selectedMetro?.includes(
                                   sub.id.toString()
                                 )}
+                                onChange={() => {}}
                                 className={styles.filters__link_check}
                               ></input>
                               <label
@@ -200,6 +202,7 @@ export const PlacesFilters = () => {
                                 checked={selectedMetro?.includes(
                                   sub.id.toString()
                                 )}
+                                onChange={() => {}}
                                 className={styles.filters__link_check}
                               ></input>
                               <label
@@ -244,6 +247,7 @@ export const PlacesFilters = () => {
                 key={type.id}
                 href={linkUrl}
                 className={styles.filters__link}
+                scroll={false}
               >
                 <li className={styles.filters__link_item}>
                   <input
@@ -293,6 +297,7 @@ export const PlacesFilters = () => {
                 key={feature.id}
                 href={linkUrl}
                 className={styles.filters__link}
+                scroll={false}
               >
                 <li className={styles.filters__link_item}>
                   <input
@@ -341,6 +346,7 @@ export const PlacesFilters = () => {
                 key={type.id}
                 href={linkUrl}
                 className={styles.filters__link}
+                scroll={false}
               >
                 <li className={styles.filters__link_item}>
                   <input

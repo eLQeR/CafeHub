@@ -45,6 +45,8 @@
     gap: 10px;
   }
   &__item {
+    display: flex;
+    flex-direction: column;
     width: calc(50% - 5px);
     border: 1px solid #cad2d9;
     box-shadow: 10px 0 40px rgba(114, 114, 114, 0.15);
@@ -62,6 +64,7 @@
     &_infoContainer {
       padding: 10px;
       background: #fff;
+      flex: 1;
     }
     &_type {
       margin: 0 0 8px;

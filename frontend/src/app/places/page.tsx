@@ -10,78 +10,37 @@ import { Place } from '@/types/types';
 
 const Places = () => {
   const searchParams = useSearchParams();
-
-  // console.log('SP:', searchParams);
-
-  // const selectedMetro = searchParams.get('metro')?.split(',') || [];
-  // const selectedFeatures = searchParams.get('features')?.split(',') || [];
-  // const selectedCuisines = searchParams.get('cuisine')?.split(',') || [];
-  // console.log('1', selectedTypes);
-
-  // if (selectedTypes.length > 0) {
-  //   let params = '?types=' + selectedTypes.join(',');
-  //   console.log('PARAMS:', params);
-  // }
-
-  // const selectedTypes = searchParams.get('types')?.split(',') || [];
   const [places, setPlaces] = useState<Place[] | []>([]);
 
   useEffect(() => {
+    const params = new URLSearchParams();
+
     const metrosParam = searchParams.get('metroes');
-    const selectedMetros = metrosParam ? metrosParam.split(',') : [];
+    if (metrosParam) {
+      params.append('metroes', metrosParam);
+    }
 
     const typesParam = searchParams.get('types');
-    const selectedTypes = typesParam ? typesParam.split(',') : [];
+    if (typesParam) {
+      params.append('types', typesParam);
+    }
 
     const featuresParam = searchParams.get('features');
-    const selectedFeatures = featuresParam ? featuresParam.split(',') : [];
+    if (featuresParam) {
+      params.append('features', featuresParam);
+    }
 
     const cuisinesParam = searchParams.get('cuisine');
-    const selectedCuisines = cuisinesParam ? cuisinesParam.split(',') : [];
-
-    let params = '';
-    if (
-      selectedTypes.length > 0 ||
-      selectedFeatures.length > 0 ||
-      selectedCuisines.length > 0 ||
-      selectedMetros.length > 0
-    ) {
-      params += '?';
-    }
-    if (selectedTypes.length > 0) {
-      params += 'types=' + selectedTypes.join(',');
-    }
-    if (params.length > 1) {
-      params += '&';
-    }
-    if (selectedFeatures.length > 0) {
-      params += 'features=' + selectedFeatures.join(',');
-    }
-    if (params.length > 1) {
-      params += '&';
-    }
-    if (selectedCuisines.length > 0) {
-      params += 'cuisines=' + selectedCuisines.join(',');
-    }
-    if (params.length > 1) {
-      params += '&';
-    }
-    if (selectedMetros.length > 0) {
-      params += 'metroes=' + selectedMetros.join(',');
+    if (cuisinesParam) {
+      params.append('cuisines', cuisinesParam);
     }
 
-    console.log('PARAMS:', params);
+    console.log('PARAMS:', params.toString());
 
-    getPlaces(params).then((data) => {
+    getPlaces(`?${params.toString()}`).then((data) => {
       setPlaces(data);
     });
   }, [searchParams]);
-
-  // useEffect(() => {
-  //   getPlaces().then((data) => {
-  //     setPlaces(data);
-  //   });
-  // }, []);
 
   return (
     <main className={styles.page__container}>
