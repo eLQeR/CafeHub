@@ -112,7 +112,7 @@ class CafeDetailSerializer(CafeSerializer):
     metro = MetroSerializer(many=False, read_only=True)
     reviews = ReviewSerializer(many=True, read_only=True)
     contacts = serializers.SlugRelatedField(slug_field="phone", read_only=True, many=True)
-    cuisine = serializers.CharField(source="cuisine.name", read_only=True)
+    cuisine = CuisineSerializer(many=False, read_only=True)
     type = serializers.CharField(source="type.name", read_only=True)
 
     class Meta:
