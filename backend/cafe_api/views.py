@@ -1,14 +1,32 @@
-from django.core.exceptions import ValidationError
+from django.core.exceptions import FieldError
 from django.db.models import Avg
-from django.utils.text import slugify
-from rest_framework import generics, mixins, viewsets
+from rest_framework.exceptions import ValidationError
+from rest_framework.pagination import PageNumberPagination
+from rest_framework import viewsets
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
-from cafe_api.models import Cafe, Metro, Feature, LineOfMetro, Cuisine, EstablishmentType, CafeWorkingHours
-from cafe_api.permissions import IsAdminOrReadOnly
-from cafe_api.serializers import CafeSerializer, CafeListSerializer, CafeDetailSerializer, FeatureSerializer, \
-    MetroSerializer, ReviewSerializer, EstablishmentTypeSerializer, CuisineSerializer, CafeWorkingHoursSerializer
-from rest_framework.pagination import PageNumberPagination
+from cafe_api.permissions import IsAdminOrReadOnly, IsReadOnlyOrEmailVerified
+from cafe_api.models import (
+    Cafe,
+    Metro,
+    Feature,
+    Cuisine,
+    EstablishmentType,
+    CafeWorkingHours,
+    Review,
+)
+
+from cafe_api.serializers import (
+    CafeSerializer,
+    CafeListSerializer,
+    CafeDetailSerializer,
+    FeatureSerializer,
+    MetroSerializer,
+    ReviewSerializer,
+    EstablishmentTypeSerializer,
+    CuisineSerializer,
+    CafeWorkingHoursSerializer,
+)
 
 
 class CafeViewSet(viewsets.ModelViewSet):
@@ -42,7 +60,7 @@ class CafeViewSet(viewsets.ModelViewSet):
         try:
             return [int(str_id) for str_id in qs.split(",")]
         except ValueError:
-            raise ValidationError("Not a valid list of IDs")
+            raise ValidationError(code=400, detail="Not a valid list of IDs")
 
     def get_queryset(self):
         queryset = self.queryset
@@ -52,6 +70,7 @@ class CafeViewSet(viewsets.ModelViewSet):
         cuisine_ids = self.request.query_params.get("cuisines", None)
         metro_ids = self.request.query_params.get("metroes", None)
         feature_ids = self.request.query_params.get("features", None)
+        ordering = self.request.query_params.get("ordering", None)
 
         if name:
             queryset = queryset.filter(name__icontains=name)
@@ -69,10 +88,30 @@ class CafeViewSet(viewsets.ModelViewSet):
         if metro_ids:
             metro_ids = self._params_to_ints(metro_ids)
             queryset = queryset.filter(metro__in=metro_ids)
+        if ordering:
+            try:
+                queryset = queryset.order_by(ordering)
+            except FieldError:
+                raise ValidationError(code=400, detail="Invalid ordering")
 
         return queryset.distinct().annotate(
             mark=(Avg("reviews__mark"))
         )
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [IsReadOnlyOrEmailVerified]
+
+    def get_queryset(self):
+        queryset = self.queryset
+        cafe_id = self.request.query_params.get("cafe", None)
+
+        if cafe_id:
+            queryset = queryset.filter(cafe_id=cafe_id)
+
+        return queryset.prefetch_related("images")
 
 
 @api_view(["GET"])
