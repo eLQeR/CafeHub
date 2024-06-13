@@ -1,18 +1,23 @@
 'use client';
 import Image from 'next/image';
 import s from './DetailsImages.module.scss';
-import { useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { DetailsImage } from '@/types/types';
 
 type Props = {
   name: string;
   images: DetailsImage[];
+  mainImg: string;
+  setMainImg: Dispatch<SetStateAction<string>>;
 };
 
-export const DetailsImages: React.FC<Props> = ({ name, images }) => {
-  console.log('IMG', images);
-  const [mainImg, setMainImg] = useState(images[0]?.image || '');
-
+export const DetailsImages: React.FC<Props> = ({
+  name,
+  images,
+  mainImg,
+  setMainImg,
+}) => {
+  console.log('IMG', mainImg);
   const slider = useRef<HTMLDivElement>(null);
   const cell = useRef<HTMLDivElement>(null);
   const [activeArrowLeft, setActiveArrowLeft] = useState(false);
@@ -59,6 +64,7 @@ export const DetailsImages: React.FC<Props> = ({ name, images }) => {
           fill
           alt={`place ${name} main photo`}
           objectFit='cover'
+          // objectFit='contain'
         ></Image>
       </div>
       <div className={s.gallery__bot}>

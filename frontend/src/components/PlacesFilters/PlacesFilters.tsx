@@ -16,6 +16,7 @@ export const PlacesFilters = () => {
   const selectedFeatures = searchParams.get('features')?.split(',') || [];
   const selectedTypes = searchParams.get('types')?.split(',') || [];
   const selectedCuisines = searchParams.get('cuisine')?.split(',') || [];
+  
   const handleToggle = (groupId: number) => {
     setOpenGroupId((prevGroupId) => (prevGroupId === groupId ? null : groupId));
   };

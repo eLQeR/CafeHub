@@ -33,17 +33,12 @@
     line-height: 17px;
     text-transform: uppercase;
   }
-  &__sortBy {
-    display: flex;
-    gap: 10px;
-  }
-
   &__list {
-    // background-color: rgba(255, 0, 0, 0.1);
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
   }
+
   &__item {
     display: flex;
     flex-direction: column;
@@ -52,14 +47,18 @@
     box-shadow: 10px 0 40px rgba(114, 114, 114, 0.15);
     text-decoration: none;
     color: inherit;
-    transition: scale 0.4s linear;
 
-    &:hover {
+    &:hover &_imageContainer img {
       scale: 1.05;
     }
+
     &_imageContainer {
       position: relative;
       height: 220px;
+      overflow: hidden;
+      & img {
+        transition: scale 0.4s linear;
+      }
     }
     &_infoContainer {
       padding: 10px;
@@ -87,6 +86,7 @@
       font-size: 12px;
       color: #787f87;
       margin: 0;
+      margin-bottom: 10px;
       &_data {
         color: #000 !important;
         font-size: 14px;
@@ -110,33 +110,5 @@
       font-size: 17px;
       font-weight: 600;
     }
-
-    &_reviewInfo {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      align-items: center;
-    }
   }
-}
-
-.stars {
-  height: 25px;
-  position: relative;
-
-  &__bg {
-    position: absolute;
-    // width: calc(100% - 70%);
-    background-color: orange;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    // z-index: -1;
-  }
-}
-
-.star {
-  position: relative;
-  z-index: 1;
 }

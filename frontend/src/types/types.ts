@@ -1,5 +1,3 @@
-import { type } from 'os';
-
 export interface DetailsPlace {
   id: number;
   name: string;
@@ -10,18 +8,28 @@ export interface DetailsPlace {
   mark: any;
   description: string;
   type: string;
-  cuisine: string;
+  cuisine: CuisineType;
   metro: Metro;
   main_photo: string;
   contacts: any[];
   features: Feature[];
   images: DetailsImage[];
-  reviews: any[];
+  reviews: Reviews[];
 }
 
+export type Reviews = {
+  id: number;
+  mark: number;
+  description: string;
+  images: ReviewsImage[];
+};
+type ReviewsImage = {
+  image: string;
+};
+
 export type DetailsImage = {
-  image: string
-}
+  image: string;
+};
 
 export interface Metro {
   id: number;
