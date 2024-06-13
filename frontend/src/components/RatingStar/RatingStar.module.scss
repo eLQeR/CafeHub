@@ -1,0 +1,20 @@
+.ratingStart {
+  &__stars {
+    height: 25px;
+    position: relative;
+    width: fit-content;
+
+    &__bg {
+      position: absolute;
+      background-color: orange;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+  }
+  &__star {
+    position: relative;
+    z-index: 1;
+  }
+}
