@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.db import transaction
 from rest_framework import serializers
 from cafe_api.models import Cafe, Feature, Gallery, Contact, Review, ReviewImage, Metro, EstablishmentType, Cuisine, CafeWorkingHours
 
@@ -65,9 +65,22 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ("id", "mark", "cafe", "description", "images")
         extra_kwargs = {"cafe": {"write_only": True}}
 
+    @transaction.atomic
+    def create(self, validated_data):
+        images = validated_data.pop("images")
+        review = Review.objects.create(**validated_data)
+        if images:
+            for image_data in images:
+                image = ReviewImage.objects.create(
+                    **image_data,
+                    review=review
+                )
+                image.save()
+        return review
+
 
 class CafeSerializer(serializers.ModelSerializer):
-    mark = serializers.FloatField(read_only=True)
+    mark = serializers.DecimalField(max_digits=4, decimal_places=2, read_only=True)
 
     class Meta:
         model = Cafe
