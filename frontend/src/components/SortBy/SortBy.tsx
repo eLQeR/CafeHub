@@ -12,7 +12,7 @@ type Props = {
 export const SortBy: React.FC<Props> = ({ isVisible, setIsVisible }) => {
   const pathname = usePathname();
   const [value, setValue] = useState('News');
-  
+
   return (
     <div className={s.sortBy}>
       <span>Sort by:</span>
@@ -23,7 +23,7 @@ export const SortBy: React.FC<Props> = ({ isVisible, setIsVisible }) => {
             setIsVisible((prev) => !prev);
           }}
         >
-          {value}
+          {value}v
         </div>
         <div
           className={cn(s.sortBy__options, {

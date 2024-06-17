@@ -1,10 +1,15 @@
 .sortBy {
   display: flex;
   gap: 10px;
-  background-color: red;
+  // background-color: red;
+
   &__place {
     position: relative;
     // width: 100px;
+  }
+  &__trigger {
+    cursor: pointer;
+    background-color: rgba(255, 0, 0, 0.089);
   }
   &__options {
     position: absolute;
