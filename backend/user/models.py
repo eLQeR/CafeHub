@@ -52,11 +52,9 @@ def user_avatar_path(instance: "User", filename: str) -> pathlib.Path:
 class User(AbstractUser):
     username = None
     email = models.EmailField(_("email address"), unique=True)
-    bio = models.TextField(null=True, blank=True)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
     objects = UserManager()
-    avatar = models.ImageField(upload_to=user_avatar_path)
     is_email_verified = models.BooleanField(default=False)
     verification_uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
