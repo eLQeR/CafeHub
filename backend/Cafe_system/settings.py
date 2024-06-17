@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
+    "localhost",
+    "13.60.105.236",
 ]
 
 
@@ -195,5 +197,6 @@ EMAIL_HOST_PASSWORD = "axvzkwqljxnoraxx"
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://13.49.125.24:3000"
+    "http://localhost",
+    "http://13.60.105.236"
 ]
