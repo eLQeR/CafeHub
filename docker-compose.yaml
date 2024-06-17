@@ -1,7 +1,6 @@
 services:
   api:
-    build:
-      context: backend/
+    image: elqer/cafehub-backend:1.2
     container_name: backend_cafe
     restart: unless-stopped
     env_file:
@@ -46,9 +45,8 @@ services:
   frontend:
     depends_on:
       - api
-    build:
-      context: frontend/
+    image: elqer/cafehub-frontend:1.2
     ports:
-      - '3000:3000'
+      - '80:3000'
     container_name: frontend_cafe
     restart: unless-stopped
