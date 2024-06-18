@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './Header.module.scss';
 import cn from 'classnames';
+import { Login } from '../Login';
 
 export const Header = () => {
   const [isBurgerVisible, setIsBurgerVisible] = useState(false);
@@ -81,6 +82,7 @@ export const Header = () => {
             className={styles.header__search}
           />
         </div>
+        <Login />
         <button
           className={cn(styles.header__burger, {
             [styles.header__burger_active]: isBurgerVisible,

@@ -1,15 +1,32 @@
 .sortBy {
   display: flex;
   gap: 10px;
-  // background-color: red;
 
   &__place {
     position: relative;
-    // width: 100px;
   }
   &__trigger {
     cursor: pointer;
-    background-color: rgba(255, 0, 0, 0.089);
+    height: 20px;
+    display: flex;
+    gap: 5px;
+
+    &--btn {
+      width: 20px;
+      height: 100%;
+      transform: rotate(90deg);
+      background-color: transparent;
+      background-image: url('/img/svg/arrow.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.3s linear;
+      &--active {
+        transform: rotate(-90deg);
+      }
+    }
   }
   &__options {
     position: absolute;
@@ -18,12 +35,20 @@
     top: 20px;
     bottom: 0;
     background-color: #fff;
-    left: 0;
     right: 0;
     display: flex;
     flex-direction: column;
     &--active {
       bottom: auto;
+    }
+  }
+  &__item {
+    text-decoration: none;
+    color: #000;
+    padding: 5px 10px;
+    text-align: center;
+    &:hover {
+      background-color: #d3d0d0;
     }
   }
 }

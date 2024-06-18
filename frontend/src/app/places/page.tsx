@@ -45,7 +45,7 @@ const Places = () => {
         params.append('ordering', orderingParam);
       }
 
-      console.log('PARAMS:', params.toString(), params.get('ordering'));
+      // console.log('PARAMS:', params.toString(), params.get('ordering'));
 
       getPlaces(`?${params.toString()}`).then((data) => {
         setPlaces(data);
