@@ -25,3 +25,21 @@ export const getFilters = async (): Promise<Filter | undefined> => {
 
   return filters;
 };
+
+export const getToken = async (email: string, password: string) => {
+  const data = await fetch(`${API_URL}/user/token/`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json, text/plain',
+      'Content-Type': 'application/json;charset=UTF-8'
+  },
+    body: JSON.stringify({
+      email,
+      password,
+    }),
+  });
+
+  const res = await data.json();
+  console.log('RES', res);
+  return res;
+};

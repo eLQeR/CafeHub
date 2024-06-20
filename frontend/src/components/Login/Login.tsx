@@ -2,18 +2,24 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 export const Login = () => {
-  const session = useSession();
-  console.log('Status:', session.status);
-  if (session.data?.user) {
+  const { data: session } = useSession();
+  console.log('Status:', session);
+  if (session?.user) {
     console.log('user:', session);
   }
 
   return (
     <div>
-      <Link href={'/api/auth/signin'}>Sign-In</Link>
+      {session?.user ? (
+        // <Link href={'/api/auth/signin'}>Sign-In</Link>
+        <button onClick={() => signOut({ callbackUrl: '/' })}>SIGN OUT</button>
+      ) : (
+        // <Link href={'/api/auth/signin'}>Sign-In</Link>
+        <button onClick={() => signIn()}>SIGN IN</button>
+      )}
     </div>
   );
 };
