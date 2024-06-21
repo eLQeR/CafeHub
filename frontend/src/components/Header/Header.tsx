@@ -84,7 +84,7 @@ export const Header = () => {
         </div>
         <Link href={'/signup'}>Reg</Link>
         <Link href={'/signin'}>Sign In</Link>
-        {/* <Login /> */}
+        <Login />
         <button
           className={cn(styles.header__burger, {
             [styles.header__burger_active]: isBurgerVisible,

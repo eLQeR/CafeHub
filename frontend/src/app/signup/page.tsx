@@ -1,40 +1,61 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 
 const page = () => {
   const router = useRouter();
+  const [data, setData] = useState({
+    email: '',
+    password: '',
+  });
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log(event.currentTarget);
-    const formData = new FormData(event.currentTarget);
-    // console.log('FD', formData);
+
     const response = await fetch('http://localhost:8000/api/user/register/', {
       method: 'POST',
-      body: formData,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
     });
 
-    // Handle response if necessary
-    const data = await response.json();
-    // ...
-    if (data.id) {
+    const userInfo = await response.json();
+
+    if (userInfo.id) {
       router.push('/signin');
     }
   }
 
   return (
     <main>
-      <h1>SIGN UP FORM</h1>
+      <h1>REGISTRATION FORM</h1>
       <form onSubmit={onSubmit}>
         <div>
           <span>E-mail:</span>
-          <input type='email' name='email' placeholder='E-mail'></input>
+          <input
+            type='email'
+            name='email'
+            placeholder='E-mail'
+            value={data.email}
+            onChange={(e) => {
+              setData({ ...data, email: e.target.value });
+            }}
+          ></input>
         </div>
         <div>
           <span>Password:</span>
-          <input type='password' name='password' placeholder='Password'></input>
+          <input
+            type='password'
+            name='password'
+            placeholder='Password'
+            value={data.password}
+            onChange={(e) => {
+              setData({ ...data, password: e.target.value });
+            }}
+          ></input>
         </div>
 
         <button type='submit'>Registration</button>
