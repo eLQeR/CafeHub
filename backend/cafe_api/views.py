@@ -1,5 +1,6 @@
 from django.core.exceptions import FieldError
 from django.db.models import Avg
+from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter, OpenApiExample
 from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
@@ -29,17 +30,39 @@ from cafe_api.serializers import (
 )
 
 
+@extend_schema_view(
+    retrieve=extend_schema(
+        summary="Retrieve a certain cafe",
+        description="User can get a detail info about cafe.",
+    ),
+    create=extend_schema(
+        summary="Create a cafe",
+        description="Admin can create a cafe.",
+    ),
+    update=extend_schema(
+        summary="Update a certain cafe",
+        description="Admin can update a cafe.",
+    ),
+    partial_update=extend_schema(
+        summary="Partial update a certain cafe",
+        description="Admin can make partial update a cafe.",
+    ),
+    destroy=extend_schema(
+        summary="Delete a certain cafe",
+        description="Admin can delete a cafe.",
+    ),
+)
 class CafeViewSet(viewsets.ModelViewSet):
     queryset = Cafe.objects.all()
     serializer_class = CafeSerializer
     permission_classes = [IsAdminOrReadOnly]
     pagination_class = PageNumberPagination
 
-    @action(detail=True, methods=['GET'], url_path="get-reviews")
-    def get_reviews(self, request, pk=None):
-        cafe = self.get_object()
-        return Response(ReviewSerializer(cafe.reviews.all(), many=True).data, status=200)
-
+    @extend_schema(
+        summary="Get get working hours of cafe",
+        description="User can get working hours of cafe.",
+        methods=["GET"],
+    )
     @action(detail=True, methods=['GET'], url_path="get-working-hours")
     def get_working_hours(self, request, pk=None):
         cafe = self.get_object()
@@ -98,7 +121,92 @@ class CafeViewSet(viewsets.ModelViewSet):
             mark=(Avg("reviews__mark"))
         )
 
+    @extend_schema(
+        summary="Get list of cafes",
+        description="User can get a list of cafes.",
+        methods=["GET"],
+        parameters=[
+            OpenApiParameter(
+                name="type_ids",
+                description="Filter by cafe type ids (ex. ?type_ids=2,3)",
+                required=False,
+                type={"type": "array", "items": {"type": "integer"}},
+            ),
+            OpenApiParameter(
+                name="cuisine_ids",
+                description="Filter by cafe cuisines ids (ex. ?cuisine_ids=1,3,6)",
+                required=False,
+                type={"type": "array", "items": {"type": "integer"}},
+            ),
+            OpenApiParameter(
+                name="feature_ids",
+                description="Filter by cafe feature ids (ex. ?feature_ids=5,7,9)",
+                required=False,
+                type={"type": "array", "items": {"type": "integer"}},
+            ),
+            OpenApiParameter(
+                name="metro_ids",
+                description="Filter by cafe metro ids (ex. ?metro_ids=5,7,9)",
+                required=False,
+                type={"type": "array", "items": {"type": "integer"}},
+            ),
+            OpenApiParameter(
+                name="name", description="Filter by name", required=False, type=str
+            ),
+            OpenApiParameter(
+                name="address", description="Filter by address", required=False, type=str
+            ),
+            OpenApiParameter(
+                name="ordering", description="Ordering cafes", required=False, type=str
+            ),
+        ],
+        examples=[
+            OpenApiExample(
+                "Example 1",
+                value={
+                    "type_ids": "1,2,7",
+                    "cuisine_ids": "1,6,8",
+                    "feature_ids": "5,8",
+                    "metro_ids": "3",
+                },
+            ),
+            OpenApiExample(
+                "Example 2",
+                value={
+                    "name": "Fenix",
+                    "feature_ids": "5,8",
+                    "metro_ids": "3",
+                    "address": "Джона Маккейна",
+                },
+            )
+        ],
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
+
+@extend_schema_view(
+    retrieve=extend_schema(
+        summary="Retrieve a certain review",
+        description="User can get a review about cafe.",
+    ),
+    create=extend_schema(
+        summary="Create a review",
+        description="User with verified email can create a review.",
+    ),
+    update=extend_schema(
+        summary="Update a the review",
+        description="User can update his own review.",
+    ),
+    partial_update=extend_schema(
+        summary="Partial update a review",
+        description="User can make partial update his own review.",
+    ),
+    destroy=extend_schema(
+        summary="Delete a certain review",
+        description="User can delete his review.",
+    ),
+)
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
@@ -113,7 +221,33 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
         return queryset.prefetch_related("images")
 
+    @extend_schema(
+        summary="Get list of reviews",
+        description="User can get a list of reviews.",
+        methods=["GET"],
+        parameters=[
+            OpenApiParameter(
+                name="cafe_id", description="Filtering by id of cafe", required=False, type=str
+            ),
+        ],
+        examples=[
+            OpenApiExample(
+                "Example 1",
+                value={
+                    "cafe_id": 4,
+                },
+            )
+        ],
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
+
+@extend_schema(
+    summary="Get filters for cafes",
+    description="User filters for filtering cafes.",
+    methods=["GET"],
+)
 @api_view(["GET"])
 def get_filters_view(request, *args, **kwargs):
     return Response(
