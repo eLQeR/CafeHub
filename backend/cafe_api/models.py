@@ -131,6 +131,8 @@ class Review(models.Model):
     def __str__(self):
         return f"{self.mark} - {self.cafe.name}"
 
+    class Meta:
+        ordering = ["-data_created"]
 
 def review_images_path(instance: "ReviewImage", filename: str) -> pathlib.Path:
     filename = f"{slugify(filename)}-{uuid.uuid4()}" + pathlib.Path(filename).suffix
