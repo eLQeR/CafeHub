@@ -1,17 +1,12 @@
+from django.contrib.auth.decorators import login_required
 from rest_framework import generics
+from rest_framework.decorators import api_view, action
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from django.urls import reverse
 from .serializers import UserSerializer
-from django.shortcuts import render, redirect
-from django.utils.http import urlsafe_base64_decode
-from django.utils.encoding import force_str
-from django.contrib.auth.models import User
-from django.contrib.auth.tokens import default_token_generator as token_generator
-from django.contrib import messages
-from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
-
+from django.shortcuts import get_object_or_404
 
 class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
@@ -25,10 +20,11 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
-
+@login_required
+@api_view(["GET"])
 def verify_email(request, verification_uuid):
-    user = get_user_model().objects.get(verification_uuid=verification_uuid)
+    user = get_object_or_404(get_user_model(), verification_uuid=verification_uuid)
     user.is_email_verified = True
     user.save()
-    messages.success(request, 'Your email has been verified.')
-    return redirect('user:token_obtain_pair')
+    return Response(data="Your email has been verified", status=200)
+
