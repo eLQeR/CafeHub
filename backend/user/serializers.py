@@ -1,9 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .task import send_verification_email
-from django.urls import reverse
+from .tasks import send_verification_email
 import uuid
-from token_generator import account_activation_token
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -21,8 +19,11 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = get_user_model().objects.create_user(**validated_data)
         user.verification_uuid = uuid.uuid4()
-        #verification_link = f"http://{self.context['request'].get_host()}/api/user/token/"
-        send_verification_email(user.id)
+        user.save()
+        send_verification_email.delay(
+            verification_uuid=user.verification_uuid,
+            user_email=user.email
+        )
         return user
 
     def update(self, instance, validated_data):
@@ -32,9 +33,3 @@ class UserSerializer(serializers.ModelSerializer):
             user.set_password(password)
             user.save()
         return user
-
-
-class UserListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = ("id", "profile_image", "email", "is_staff")
