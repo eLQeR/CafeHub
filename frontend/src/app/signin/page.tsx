@@ -4,7 +4,7 @@ import { getToken } from '@/services/getPlaces';
 import { signIn } from 'next-auth/react';
 import { FormEvent, useState } from 'react';
 
-const page = () => {
+const SignIn = () => {
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -60,4 +60,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default SignIn;

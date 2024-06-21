@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 
-const page = () => {
+const SignUp = () => {
   const router = useRouter();
   const [data, setData] = useState({
     email: '',
@@ -64,4 +64,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default SignUp;
