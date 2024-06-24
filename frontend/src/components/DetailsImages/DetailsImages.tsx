@@ -60,6 +60,7 @@ export const DetailsImages: React.FC<Props> = ({
     <div className={s.gallery}>
       <div className={s.gallery__top}>
         <Image
+          unoptimized
           src={mainImg}
           fill
           alt={`place ${name} main photo`}
@@ -77,6 +78,7 @@ export const DetailsImages: React.FC<Props> = ({
           {images.map((img) => (
             <div key={img.image} className={s.gallery__item} ref={cell}>
               <Image
+                unoptimized
                 src={img.image}
                 fill
                 alt={`place ${name} main photo`}

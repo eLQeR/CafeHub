@@ -74,7 +74,8 @@ const Places = () => {
                 >
                   <div className={styles.catalog__item_imageContainer}>
                     <Image
-                      src={`/data/1.jpg`}
+                      unoptimized
+                      src={place.main_photo}
                       fill
                       alt={`main image ${place.type} ${place.name}`}
                     ></Image>
