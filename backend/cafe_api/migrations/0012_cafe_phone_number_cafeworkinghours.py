@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='cafe',
             name='phone_number',
-            field=models.IntegerField(default=380111111111),
+            field=models.IntegerField(default=0),
         ),
         migrations.CreateModel(
             name='CafeWorkingHours',
