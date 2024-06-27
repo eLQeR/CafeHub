@@ -1,7 +1,19 @@
 from django.contrib import admin
-from cafe_api.models import Cafe, Contact, Feature, Gallery, Review, Metro, LineOfMetro, ReviewImage, CafeWorkingHours
+from cafe_api.models import (
+    Cafe,
+    Contact,
+    Feature,
+    Gallery,
+    Review,
+    Metro,
+    LineOfMetro,
+    ReviewImage,
+    CafeWorkingHours,
+    Cuisine,
+    EstablishmentType
+)
 
-models = [Contact, Feature, Metro, LineOfMetro]
+models = [Contact, Feature, Metro, LineOfMetro, Cuisine, EstablishmentType]
 for model in models:
     admin.site.register(model)
 
