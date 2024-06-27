@@ -142,6 +142,7 @@ class CafeDetailSerializer(CafeSerializer):
             "type",
             "cuisine",
             "metro",
+            "google_address_url",
             "main_photo",
             "contacts",
             "features",
