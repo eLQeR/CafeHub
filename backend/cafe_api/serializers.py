@@ -114,7 +114,7 @@ class CafeListSerializer(CafeSerializer):
             "medium_check",
             "mark",
             "type",
-            "url",
+            "slug",
             "main_photo",
         )
 
@@ -142,6 +142,8 @@ class CafeDetailSerializer(CafeSerializer):
             "type",
             "cuisine",
             "metro",
+            "slug",
+            "cafe_url",
             "google_address_url",
             "main_photo",
             "contacts",
