@@ -33,7 +33,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "13.60.105.236",
+    "13.60.88.127",
 ]
 
 
@@ -100,6 +100,7 @@ DATABASES = {
         "PORT": os.environ["POSTGRES_PORT"],
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -202,5 +203,5 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:80",
     "http://localhost",
-    "http://13.60.105.236"
+    "http://13.60.88.127"
 ]
