@@ -53,8 +53,9 @@ class Cafe(models.Model):
     data_created = models.DateField()
     medium_check = models.PositiveIntegerField(null=True, blank=True)
     features = models.ManyToManyField(to=Feature, blank=True)
-    url = models.SlugField(max_length=255, unique=True)
-    google_address_url = models.URLField(max_length=255, null=True, blank=True)
+    slug = models.SlugField(max_length=255, unique=True)
+    cafe_url = models.CharField(max_length=255, null=True, blank=True)
+    google_address_url = models.CharField(max_length=255, null=True, blank=True)
     type = models.ForeignKey(to=EstablishmentType, on_delete=models.CASCADE, related_name="cafes")
     cuisine = models.ForeignKey(to=Cuisine, on_delete=models.CASCADE, related_name="cafes")
     metro = models.ForeignKey(
