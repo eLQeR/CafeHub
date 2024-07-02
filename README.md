@@ -26,7 +26,7 @@ Location: Find cafes that are conveniently located near parks, museums, or sceni
 
 ## Deploy
 
-CafeHub is hosted on EC2 AWS instance  [web-site](http://13.60.88.127) on "http"
+CafeHub is hosted on EC2 AWS instance  [web-site](http://13.48.146.199) on "http"
 
 ## Installation
 
