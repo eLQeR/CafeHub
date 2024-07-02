@@ -1,14 +1,18 @@
 'use client';
 
-import { getToken } from '@/services/getPlaces';
+import { AUTH } from '@/services/auth';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 
 const SignIn = () => {
+  const router = useRouter();
+
   const [data, setData] = useState({
     email: '',
     password: '',
   });
+
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     // console.log(event.currentTarget);
@@ -18,11 +22,15 @@ const SignIn = () => {
     // const formEmail = formData.get('email') as string;
     // const formPassword = formData.get('password') as string;
 
-    // getToken(formEmail, formPassword);
+    // AUTH.getToken(formEmail, formPassword);
 
     // console.log('RESP:', resp);
-    console.log('DATA:', data);
-    signIn('credentials', { ...data, redirect: false });
+    // console.log('DATA:', data);
+    const res = await signIn('credentials', { ...data, redirect: false });
+    
+    if (res && !res.error) {
+      router.push('/profile');
+    }
   }
 
   return (

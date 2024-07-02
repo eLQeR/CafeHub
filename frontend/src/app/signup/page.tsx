@@ -1,5 +1,6 @@
 'use client';
 
+import { API_URL } from '@/services/constants';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 
@@ -13,7 +14,7 @@ const SignUp = () => {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const response = await fetch('http://localhost:8000/api/user/register/', {
+    const response = await fetch(`${API_URL}/user/register/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

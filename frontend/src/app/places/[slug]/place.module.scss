@@ -78,12 +78,7 @@
     border-bottom: 1px dashed;
   }
 }
-.ratings {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 0;
-}
+
 .mark {
   display: flex;
   align-items: center;
@@ -92,43 +87,7 @@
   border-radius: 10px;
 }
 
-.rating {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: white;
-  padding: 10px;
-  border-radius: 10px;
 
-  &__avatar {
-    min-width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: gray;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: black;
-    text-transform: uppercase;
-    font-size: 20px;
-  }
-  &__content {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    justify-content: flex-start;
-  }
-  &__photo {
-    position: relative;
-    height: 100px;
-    min-width: 100px;
-    border-radius: 10px;
-    overflow: hidden;
-    & img {
-      cursor: pointer;
-    }
-  }
-}
 
 .tabs {
   & b {

@@ -1,0 +1,50 @@
+.ratings {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &__avatar {
+    min-width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    text-transform: uppercase;
+    font-size: 20px;
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: flex-start;
+  }
+  &__images {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  &__photo {
+    position: relative;
+    height: 100px;
+    min-width: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+}

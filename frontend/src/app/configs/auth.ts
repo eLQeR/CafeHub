@@ -1,28 +1,9 @@
-import { getToken } from '@/services/getPlaces';
-import type { NextAuthOptions, User } from 'next-auth';
+import { AUTH } from '@/services/auth';
+import type { NextAuthOptions } from 'next-auth';
 import Credential from 'next-auth/providers/credentials';
 // import GoogleProvider from 'next-auth/providers/google';
 
-// const USERS = [
-//   {
-//     id: '0',
-//     email: 'ptb@bk.com',
-//     password: '123',
-//     image: '/public/mockData/1.jpg',
-//   },
-//   {
-//     id: '1',
-//     email: 'yashopua@gmail.com',
-//     password: '123456',
-//     image: '/public/mockData/2.jpg',
-//   },
-//   {
-//     id: '2',
-//     email: 'ptb19@bk.com',
-//     password: '123',
-//     image: '/public/mockData/3.jpg',
-//   },
-// ];
+
 
 export const authConfig: NextAuthOptions = {
   providers: [
@@ -33,42 +14,44 @@ export const authConfig: NextAuthOptions = {
     Credential({
       name: 'credentials',
       credentials: {
-        email: {
-          label: 'email',
-          type: 'email',
-          required: true,
-          placeholder: 'jsmith@gmail.com',
-        },
+        email: { label: 'email', type: 'email', required: true },
         password: { label: 'password', type: 'password', required: true },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) return null;
 
-        const userToken = await getToken(
+        const userToken = await AUTH.getToken(
           credentials.email,
           credentials.password
         );
-        console.log('userToken:', userToken);
 
-        const user = {
-          email: credentials.email,
-        };
+        if (userToken.access) {
+          const res = await AUTH.getUserData(userToken.access);
 
-        return userToken;
+          return res;
+        } else {
+          return null;
+        }
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.uid  = user;
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token.uid) {
+        session.user.is_email_verified = token.uid.is_email_verified;
+      }
+      return session;
+    },
+  },
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
   },
-  // callbacks: {
-  //   async session({ session, token }) {
-  //     console.log('1', session);
-  //     if (session.user) {
-  //       session.user.name = 'test';
-  //     }
-  //     console.log('2', session);
-  //     return session;
-  //   },
-  // },
 };

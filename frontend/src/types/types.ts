@@ -85,3 +85,10 @@ type MetroLines = {
   red: Metro[];
   blue: Metro[];
 };
+
+export type CafeUser = {
+  id: string;
+  email: string;
+  is_staff: boolean;
+  is_email_verified: boolean;
+};

@@ -17,7 +17,6 @@ export const DetailsImages: React.FC<Props> = ({
   mainImg,
   setMainImg,
 }) => {
-  console.log('IMG', mainImg);
   const slider = useRef<HTMLDivElement>(null);
   const cell = useRef<HTMLDivElement>(null);
   const [activeArrowLeft, setActiveArrowLeft] = useState(false);
@@ -29,7 +28,6 @@ export const DetailsImages: React.FC<Props> = ({
   }
 
   const goLeft = () => {
-    console.log('L', slider.current);
     if (slider.current) {
       setActiveArrowRight(true);
       const currentScroll = slider.current.scrollLeft;

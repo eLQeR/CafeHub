@@ -21,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
         user = get_user_model().objects.create_user(**validated_data)
         user.verification_uuid = uuid.uuid4()
         user.save()
-        send_verification_email.delay(
+        send_verification_email(
             verification_uuid=user.verification_uuid,
             user_email=user.email
         )
