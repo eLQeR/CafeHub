@@ -1,13 +1,11 @@
 'use client';
 
-// import { AUTH } from '@/services/auth';
-import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { FormEvent, useEffect, useState } from 'react';
-import AuthError from 'next-auth';
 import s from './signin.module.scss';
 import classNames from 'classnames';
+import { useRouter } from 'next/navigation';
+import { FormEvent, useState } from 'react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 const SignIn = () => {
   const router = useRouter();
@@ -21,11 +19,6 @@ const SignIn = () => {
     email: '',
     password: '',
   });
-
-  useEffect(() => {
-    console.log('error', error);
-    console.log('emailError', emailError);
-  }, [error, emailError]);
 
   const clearError = () => {
     setError(null);
@@ -42,20 +35,19 @@ const SignIn = () => {
     }
     if (data.password === '') {
       setPasswordError('Password обов`язкове поле');
-    } else if (emailError === null && passwordError === null) {
-      try {
-        const res = await signIn('credentials', { ...data, redirect: false });
-        if (res && !res.error) {
-          router.back();
-        }
-        console.log('res error', res?.error);
-        if (res?.error) {
-          setError(res.error);
-        }
-      } catch (error) {
-        if (error instanceof AuthError) {
-          console.log('error', error, error.toString());
-        }
+    } else if (
+      emailError === null &&
+      passwordError === null &&
+      data.email.length > 0
+    ) {
+      const res = await signIn('credentials', { ...data, redirect: false });
+
+      if (res && !res.error) {
+        router.back();
+      }
+
+      if (res?.error) {
+        setError(res.error);
       }
     }
   }
@@ -64,7 +56,7 @@ const SignIn = () => {
     <main>
       {session ? (
         <div className={s.container}>
-          <h1 className={s.title}>Вже залогінелись</h1>
+          <h1 className={s.title}>Вже залогінелись!</h1>
           <h2 className={s.title}>{session.user.email}</h2>
           <button type='button' className={s.button} onClick={() => signOut()}>
             Вийти
@@ -74,12 +66,6 @@ const SignIn = () => {
         <div className={s.container}>
           <h1 className={s.title}>Вхід</h1>
           <form onSubmit={onSubmit} className={s.form} onChange={clearError}>
-            {/* <div> */}
-            {/* <span>E-mail:</span> */}
-            {/* className={classNames(styles.filters__block_btn, {
-                      [styles.filters__block_btn_active]:
-                        openGroupId === line.id,
-                    })} */}
             <input
               className={classNames(s.input, {
                 [s.war]: error,
@@ -93,9 +79,6 @@ const SignIn = () => {
                 setData({ ...data, email: e.target.value });
               }}
             ></input>
-            {/* </div> */}
-            {/* <div> */}
-            {/* <span>Password:</span> */}
             <input
               className={classNames(s.input, {
                 [s.war]: error,
@@ -109,7 +92,6 @@ const SignIn = () => {
                 setData({ ...data, password: e.target.value });
               }}
             ></input>
-            {/* </div> */}
             {error !== null && <h2 className={s.message__error}>{error}</h2>}
             {emailError !== null && (
               <h2 className={s.message__error}>{emailError}</h2>

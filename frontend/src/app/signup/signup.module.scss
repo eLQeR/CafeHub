@@ -2,9 +2,9 @@
   margin: 0 auto;
   margin-top: 0px;
   max-width: fit-content;
+  min-width: 400px;
   padding: 20px 30px;
   margin-top: 50px;
-  min-width: 400px;
   border: 1px solid grey;
   border-radius: 10px;
 }
@@ -44,7 +44,9 @@
   &:hover {
     background-color: grey;
   }
-
+  &:disabled {
+    cursor: no-drop;
+  }
 }
 
 .reg {
