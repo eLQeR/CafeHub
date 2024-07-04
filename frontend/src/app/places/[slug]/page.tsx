@@ -5,7 +5,6 @@ import { getPlace } from '@/services/getPlaces';
 import { useEffect, useState } from 'react';
 import { DetailsPlace } from '@/types/types';
 import { RatingStar } from '@/components/RatingStar';
-import classNames from 'classnames';
 import Link from 'next/link';
 import { ReviewsList } from '@/components/Reviews';
 
@@ -112,7 +111,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           <ReviewsList reviews={place.reviews} placeId={params.slug} />
           <section id='map'>
             <iframe
-              src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2541.2309684126076!2d30.53013007694066!3d50.43679838834614!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cf07295b8e39%3A0x17b2112e2dc0e7a!2z0YPQuy4g0JzQtdGH0L3QuNC60L7QstCwLCAxNC8xLCDQmtC40LXQsiwgMDIwMDA!5e0!3m2!1sru!2sua!4v1718105878063!5m2!1sru!2sua'
+              src={place.google_address_url}
               width='100%'
               height='600'
               style={{ border: 'none' }}

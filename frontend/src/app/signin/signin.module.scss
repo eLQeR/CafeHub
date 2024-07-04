@@ -25,6 +25,9 @@
   border-radius: 14px;
   font-size: 19px;
 }
+.war {
+  border: 2px solid #dd5656;
+}
 
 .button {
   margin-top: 20px;
@@ -36,7 +39,7 @@
   background-color: white;
   cursor: pointer;
   transition: background-color 0.3s linear;
-  
+
   &:hover {
     background-color: grey;
   }
@@ -49,4 +52,9 @@
 }
 .message {
   text-align: center;
+  &__error {
+    color: #dd5656;
+    font-size: 17px;
+    margin: 20px auto 0;
+  }
 }

@@ -17,11 +17,7 @@ export const authConfig: NextAuthOptions = {
         password: { label: 'password', type: 'password', required: true },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password)
-          throw new Error(
-            '111Unauthorized access: User does not have admin privileges.'
-          );
-        // return null;
+        if (!credentials?.email || !credentials.password) return null;
 
         const userToken = await AUTH.getToken(
           credentials.email,
@@ -34,9 +30,7 @@ export const authConfig: NextAuthOptions = {
 
           return res;
         } else {
-          // return null;
-          // throw error;
-          throw new Error(userToken.detail);
+          throw new Error('Невірний логін або пароль');
         }
       },
     }),
