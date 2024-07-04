@@ -7,10 +7,14 @@
 
 .row {
   display: flex;
+  gap: 10px;
   justify-content: space-between;
   background-color: white;
   padding: 10px;
   border-radius: 10px;
+}
+.reviews {
+  margin-bottom: 10px;
 }
 .rating {
   display: flex;
@@ -38,6 +42,7 @@
   &__images {
     display: flex;
     gap: 10px;
+    justify-content: end;
     align-items: center;
   }
   &__photo {
@@ -47,4 +52,99 @@
     border-radius: 10px;
     overflow: hidden;
   }
+}
+
+.title {
+  margin: 0;
+  margin-bottom: 15px;
+}
+.message {
+  display: block;
+  text-align: center;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 25px;
+}
+.message:hover {
+  background-color: rgba(128, 128, 128, 0.568);
+}
+.add-review {
+  border: 1px solid grey;
+  // padding: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.container {
+  padding: 10px;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__submit {
+    margin-top: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid grey;
+    border-radius: 10px;
+    &:disabled {
+      cursor: no-drop;
+    }
+  }
+}
+.block {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  &__title {
+    align-self: center;
+    min-width: 180px;
+  }
+
+  &__description {
+    width: 100%;
+    font-size: 18px;
+    outline: none;
+    padding: 5px;
+    border: 1px solid grey;
+    border-radius: 10px;
+  }
+}
+
+.stars {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 5px;
+}
+
+.star {
+  stroke: black;
+  cursor: pointer;
+}
+
+.button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.button .star path {
+  fill: none;
+}
+
+.button.hovered .star path,
+.button:hover .star path {
+  fill: #ffa400;
+}
+
+.button:hover ~ .button .star path {
+  fill: none;
 }

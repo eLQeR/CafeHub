@@ -15,6 +15,8 @@ export interface DetailsPlace {
   features: Feature[];
   images: DetailsImage[];
   reviews: Reviews[];
+  google_address_url: string;
+  cafe_url: string;
 }
 
 export type Reviews = {

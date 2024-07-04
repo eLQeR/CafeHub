@@ -15,13 +15,13 @@ export const Login = () => {
     <div>
       {session?.user ? (
         <>
-          <Link href={'/profile'}>Profile</Link>
-          <button onClick={() => signOut({ callbackUrl: '/' })}>
-            SIGN OUT
-          </button>
+          {/* <Link href={'/profile'}>Profile</Link> */}
+          <button onClick={() => signOut({ callbackUrl: '/' })}>Вийти</button>
+          {/* <Link href={'/signup'}>Reg</Link> */}
         </>
       ) : (
-        <button onClick={() => signIn()}>SIGN IN</button>
+        <Link href={'/signin'}>Увійти</Link>
+        // <button onClick={() => signIn()}>SIGN IN</button>
       )}
     </div>
   );

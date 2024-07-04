@@ -82,8 +82,7 @@ export const Header = () => {
             className={styles.header__search}
           />
         </div>
-        <Link href={'/signup'}>Reg</Link>
-        <Link href={'/signin'}>Sign In</Link>
+
         <Login />
         <button
           className={cn(styles.header__burger, {

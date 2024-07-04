@@ -5,6 +5,7 @@ declare module 'next-auth' {
     user: {
       email: string;
       is_email_verified: boolean;
+      access: string;
     };
   }
 
@@ -16,6 +17,14 @@ declare module 'next-auth' {
   }
 
   interface JWT {
+    uid: User;
+  }
+}
+
+declare module 'next-auth/jwt' {
+  /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
+  interface JWT {
+    /** OpenID ID Token */
     uid: User;
   }
 }

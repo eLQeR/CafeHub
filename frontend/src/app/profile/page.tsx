@@ -3,7 +3,6 @@ import { authConfig } from '../configs/auth';
 
 const page = async () => {
   const session = await getServerSession(authConfig);
-
   return (
     <main>
       <h1>User profile page</h1>

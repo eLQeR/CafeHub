@@ -8,6 +8,7 @@
   &__top {
     background-color: white;
     padding: 10px;
+    border-radius: 10px;
     margin-bottom: 10px;
     display: flex;
     gap: 10px;
@@ -32,19 +33,36 @@
     margin-top: 20px;
     display: flex;
     gap: 10px;
-    width: 100%;
-  }
-  &__column {
-    width: 50%;
-
-    &--right {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    justify-content: space-between;
+    &--link {
       display: flex;
-      gap: 10px;
-      height: min-content;
       align-items: center;
+      gap: 10px;
     }
+  }
+  &__contacts {
+    width: 50%;
+    &--link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+  &__left {
+    // width: 50%;
+  }
+  &__right {
+    // width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
     &--features {
       display: flex;
+      align-items: center;
       gap: 10px;
     }
   }
@@ -58,10 +76,11 @@
     text-decoration: none;
     border: 1px solid gray;
     padding: 10px;
-    width: max-content;
+    min-width: max-content;
+    transition: background-color 0.3s linear;
 
     &:hover {
-      background-color: white;
+      background-color: gray;
     }
   }
 }
@@ -86,8 +105,6 @@
   background-color: white;
   border-radius: 10px;
 }
-
-
 
 .tabs {
   & b {

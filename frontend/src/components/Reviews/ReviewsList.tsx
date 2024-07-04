@@ -1,21 +1,26 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './ReviewsList.module.scss';
-import { Reviews } from '@/types/types';
 import Image from 'next/image';
+import { Reviews } from '@/types/types';
 import { RatingStar } from '../RatingStar';
+import { AddReview } from './AddReview';
 
-export const ReviewsList = ({ reviews }: { reviews: Reviews[] }) => {
-  const { data: session } = useSession();
+export const ReviewsList = ({
+  reviews,
+  placeId,
+}: {
+  reviews: Reviews[];
+  placeId: string;
+}) => {
+  const [reviewList, setReviewList] = useState(reviews);
 
-  console.log('Reviews SESSION:', session?.user.is_email_verified);
   return (
-    <div>
-      Reviews
+    <div id='reviews' className={styles.reviews}>
+      <h3>Відгуки:</h3>
       <ul className={styles.ratings}>
-        {reviews.map((review) => (
+        {reviewList.map((review) => (
           <li key={review.id} className={styles.row}>
             <div className={styles.rating}>
               <div className={styles.rating__avatar}>
@@ -42,6 +47,9 @@ export const ReviewsList = ({ reviews }: { reviews: Reviews[] }) => {
           </li>
         ))}
       </ul>
+      <div>
+        <AddReview placeId={placeId} setReviewList={setReviewList} />
+      </div>
     </div>
   );
 };

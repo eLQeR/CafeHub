@@ -1,9 +1,8 @@
 import { AUTH } from '@/services/auth';
+import { error } from 'console';
 import type { NextAuthOptions } from 'next-auth';
 import Credential from 'next-auth/providers/credentials';
 // import GoogleProvider from 'next-auth/providers/google';
-
-
 
 export const authConfig: NextAuthOptions = {
   providers: [
@@ -18,19 +17,26 @@ export const authConfig: NextAuthOptions = {
         password: { label: 'password', type: 'password', required: true },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password) return null;
+        if (!credentials?.email || !credentials.password)
+          throw new Error(
+            '111Unauthorized access: User does not have admin privileges.'
+          );
+        // return null;
 
         const userToken = await AUTH.getToken(
           credentials.email,
           credentials.password
         );
-
+        console.log('userToken:', userToken);
         if (userToken.access) {
           const res = await AUTH.getUserData(userToken.access);
+          res.access = userToken.access;
 
           return res;
         } else {
-          return null;
+          // return null;
+          // throw error;
+          throw new Error(userToken.detail);
         }
       },
     }),
@@ -38,7 +44,7 @@ export const authConfig: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.uid  = user;
+        token.uid = user;
       }
 
       return token;
@@ -46,7 +52,9 @@ export const authConfig: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user && token.uid) {
         session.user.is_email_verified = token.uid.is_email_verified;
+        session.user.access = token.uid.access;
       }
+
       return session;
     },
   },

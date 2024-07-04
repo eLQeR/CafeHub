@@ -11,7 +11,6 @@ import { ReviewsList } from '@/components/Reviews';
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [place, setPlace] = useState<undefined | DetailsPlace>(undefined);
-  const [tab, setTab] = useState(1);
   const [mainImg, setMainImg] = useState('');
 
   useEffect(() => {
@@ -25,7 +24,6 @@ export default function Page({ params }: { params: { slug: string } }) {
     <>
       {place ? (
         <main className={styles.page__container}>
-          <ReviewsList reviews={place.reviews} />
           <h1 className={styles.page__title}>{place.name}</h1>
           <section className={styles.page__top}>
             <div className={styles['page__top--column']}>
@@ -63,29 +61,24 @@ export default function Page({ params }: { params: { slug: string } }) {
           />
 
           <section className={styles.page__info}>
-            <div className={styles['page__column']}>
+            <div className={styles.page__left}>
               <p>Контакти:</p>
               <p>(044) 357 00 77 </p>
               <p>(099) 357 00 77 </p>
-              <br></br>
-              <p>
-                Кухня:{' '}
-                <Link
-                  href={`/places?cuisine=${place.cuisine.id}`}
+              <div className={styles['page__info--link']}>
+                Сторінка закладу:{' '}
+                <a
+                  target='_blank'
+                  href={place.cafe_url}
                   className={styles.page__link}
                 >
-                  {place.cuisine.name}
-                </Link>
-              </p>
+                  {place.name}
+                </a>
+              </div>
             </div>
-            <div
-              className={classNames(
-                styles['page__column'],
-                styles['page__column--right']
-              )}
-            >
-              <p>Особливості:</p>
-              <div className={styles['page__column--features']}>
+            <div className={styles.page__right}>
+              <div className={styles['page__right--features']}>
+                <p>Особливості:</p>
                 {place.features.map((feature) => (
                   <Link
                     key={feature.id}
@@ -96,31 +89,19 @@ export default function Page({ params }: { params: { slug: string } }) {
                   </Link>
                 ))}
               </div>
+              <div className={styles['page__right--features']}>
+                Кухня:{' '}
+                <Link
+                  href={`/places?cuisine=${place.cuisine.id}`}
+                  className={styles.page__link}
+                >
+                  {place.cuisine.name}
+                </Link>
+              </div>
             </div>
           </section>
           <section className={styles.page__description}>
-            <div className={styles.tabs}>
-              <button
-                className={classNames([styles['tabs__btn']], {
-                  [styles['tabs__btn--active']]: tab === 1,
-                })}
-                onClick={() => {
-                  setTab(1);
-                }}
-              >
-                Опис
-              </button>
-              <button
-                className={classNames([styles['tabs__btn']], {
-                  [styles['tabs__btn--active']]: tab === 2,
-                })}
-                onClick={() => {
-                  setTab(2);
-                }}
-              >
-                Відгуки (<b>{place.reviews.length}</b>)
-              </button>
-            </div>
+            <h3>Опис:</h3>
             <div className={styles.tabs__content}>
               <div
                 className={styles.tabs__description}
@@ -128,7 +109,8 @@ export default function Page({ params }: { params: { slug: string } }) {
               ></div>
             </div>
           </section>
-          {/* <section id='map'>
+          <ReviewsList reviews={place.reviews} placeId={params.slug} />
+          <section id='map'>
             <iframe
               src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2541.2309684126076!2d30.53013007694066!3d50.43679838834614!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cf07295b8e39%3A0x17b2112e2dc0e7a!2z0YPQuy4g0JzQtdGH0L3QuNC60L7QstCwLCAxNC8xLCDQmtC40LXQsiwgMDIwMDA!5e0!3m2!1sru!2sua!4v1718105878063!5m2!1sru!2sua'
               width='100%'
@@ -136,7 +118,7 @@ export default function Page({ params }: { params: { slug: string } }) {
               style={{ border: 'none' }}
               loading='lazy'
             ></iframe>
-          </section> */}
+          </section>
         </main>
       ) : (
         <main> Loading...</main>
