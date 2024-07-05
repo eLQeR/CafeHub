@@ -3,8 +3,9 @@ from rest_framework.routers import DefaultRouter
 
 from cafe_api.views import (
     CafeViewSet,
-    get_filters_view,
     ReviewViewSet,
+    FiltersView,
+    IndexView,
 )
 
 app_name = "catalog"
@@ -16,5 +17,6 @@ router.register('reviews', ReviewViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("filters/", get_filters_view, name="filters"),
+    path("index/", IndexView.as_view(), name="index"),
+    path("filters/", FiltersView.as_view(), name="filters"),
 ]
