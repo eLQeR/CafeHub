@@ -253,7 +253,7 @@ def get_filters_view(request, *args, **kwargs):
     return Response(
         {
             "metro": {
-                "green": MetroSerializer(Metro.objects.filter(line__name=1), many=True).data,
+                "green": MetroSerializer(Metro.objects.filter(line_id=1), many=True).data,
                 "red": MetroSerializer(Metro.objects.filter(line_id=2), many=True).data,
                 "blue": MetroSerializer(Metro.objects.filter(line_id=3), many=True).data,
             },
