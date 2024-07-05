@@ -89,10 +89,10 @@ class CafeViewSet(viewsets.ModelViewSet):
         queryset = self.queryset
         name = self.request.query_params.get("name", None)
         address = self.request.query_params.get("address", None)
-        type_ids = self.request.query_params.get("types", None)
-        cuisine_ids = self.request.query_params.get("cuisines", None)
-        metro_ids = self.request.query_params.get("metroes", None)
-        feature_ids = self.request.query_params.get("features", None)
+        type_ids = self.request.query_params.get("type_ids", None)
+        cuisine_ids = self.request.query_params.get("cuisine_ids", None)
+        metro_ids = self.request.query_params.get("metro_ids", None)
+        feature_ids = self.request.query_params.get("feature_ids", None)
         ordering = self.request.query_params.get("ordering", None)
 
         if name:
