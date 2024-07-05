@@ -58,7 +58,12 @@ class CafeWorkingHoursSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    images = ReviewImageSerializer(many=True, read_only=False)
+    images = ReviewImageSerializer(
+        many=True,
+        read_only=False,
+        required=False,
+        allow_empty=True
+    )
 
     class Meta:
         model = Review
@@ -67,17 +72,13 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        images = validated_data.pop("images")
         review = Review.objects.create(**validated_data)
+        images = self.context['request'].FILES.getlist('images')
         if images:
-            for image_data in images:
-                image = ReviewImage.objects.create(
-                    **image_data,
-                    review=review
-                )
+            for image in images:
+                image = ReviewImage(image=image, review=review)
                 image.save()
         return review
-
 
 class CafeSerializer(serializers.ModelSerializer):
     mark = serializers.DecimalField(max_digits=4, decimal_places=2, read_only=True)
