@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 
 const SignIn = () => {
   const router = useRouter();
@@ -32,9 +33,11 @@ const SignIn = () => {
 
     if (data.email === '') {
       setEmailError('Email обов`язкове поле');
+      toast.error('Email обов`язкове поле');
     }
     if (data.password === '') {
       setPasswordError('Password обов`язкове поле');
+      toast.error('Password обов`язкове поле');
     } else if (
       emailError === null &&
       passwordError === null &&
@@ -43,6 +46,7 @@ const SignIn = () => {
       const res = await signIn('credentials', { ...data, redirect: false });
 
       if (res && !res.error) {
+        toast.success('Успішно залогінелись')
         router.back();
       }
 
@@ -105,7 +109,7 @@ const SignIn = () => {
             <div className={s.message}>
               Не має аккаунта?{' '}
               <Link href={'/signup'} className={s.reg}>
-                Регістрацїя
+              Реєстрація
               </Link>
             </div>
           </form>

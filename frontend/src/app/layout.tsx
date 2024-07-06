@@ -6,6 +6,7 @@ import { Footer } from '@/components/Footer';
 import { Providers } from '@/components/Providers';
 import { getServerSession } from 'next-auth';
 import { authConfig } from './configs/auth';
+import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,6 +28,7 @@ export default async function RootLayout({
           <Header />
           <>{children}</>
           <Footer />
+          <Toaster richColors expand />
         </Providers>
       </body>
     </html>

@@ -1,5 +1,7 @@
+'use client';
+
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import s from './SortBy.module.scss';
 import cn from 'classnames';
@@ -33,8 +35,8 @@ const orderingVariants = [
 ];
 
 export const SortBy: React.FC<Props> = ({ isVisible, setIsVisible }) => {
-  const pathname = usePathname();
   const [value, setValue] = useState('News');
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const ordering = searchParams.get('ordering');
 
@@ -48,9 +50,23 @@ export const SortBy: React.FC<Props> = ({ isVisible, setIsVisible }) => {
     }
   }, [ordering]);
 
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value === '') {
+        params.delete(name);
+      } else {
+        params.set(name, value);
+      }
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
   return (
     <div className={s.sortBy}>
-      <span>Sort by:</span>
+      <span>Сортування:</span>
       <div className={s.sortBy__place}>
         <div
           className={s.sortBy__trigger}
@@ -71,10 +87,13 @@ export const SortBy: React.FC<Props> = ({ isVisible, setIsVisible }) => {
           })}
         >
           {orderingVariants.map((variant) => {
+            let linkUrl =
+              pathname + '?' + createQueryString('ordering', variant.title);
+            
             return (
               <Link
                 key={variant.title}
-                href={pathname + '?ordering=' + `${variant.title}`}
+                href={linkUrl}
                 className={s.sortBy__item}
               >
                 {variant.value}

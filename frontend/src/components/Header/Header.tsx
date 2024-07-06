@@ -75,15 +75,17 @@ export const Header = () => {
           </ul>
         </nav>
 
-        <div className={styles.header__searchContainer}>
-          <input
-            type='text'
-            placeholder='Search...'
-            className={styles.header__search}
-          />
-        </div>
+        <div className={styles.header__right}>
+          <div className={styles.header__searchContainer}>
+            <input
+              type='text'
+              placeholder='Search...'
+              className={styles.header__search}
+            />
+          </div>
 
-        <Login />
+          <Login />
+        </div>
         <button
           className={cn(styles.header__burger, {
             [styles.header__burger_active]: isBurgerVisible,

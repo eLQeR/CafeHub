@@ -6,7 +6,7 @@ import { REVIEW } from '@/services/reviews';
 import { ReviewStars } from './ReviewStars';
 import Link from 'next/link';
 import { Reviews } from '@/types/types';
-
+import { toast } from 'sonner';
 type Props = {
   placeId: string;
   setReviewList: React.Dispatch<React.SetStateAction<Reviews[]>>;
@@ -30,6 +30,7 @@ export const AddReview: React.FC<Props> = ({ placeId, setReviewList }) => {
       formRef.current.reset();
       setMark(1);
       setFileLimitExceeded(false);
+      toast.success('Дякуємо за Ваш відгук!');
     }
   };
 
@@ -91,6 +92,9 @@ export const AddReview: React.FC<Props> = ({ placeId, setReviewList }) => {
               type='submit'
               className={styles.form__submit}
               disabled={!session?.user.is_email_verified || fileLimitExceeded}
+              onClick={() => {
+                console.log('CLICk');
+              }}
             >
               {session?.user.is_email_verified ? (
                 <span>Додати відгук</span>

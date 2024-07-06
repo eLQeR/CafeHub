@@ -39,10 +39,13 @@ export interface Metro {
   slug: string;
 }
 
-export type PlaceResponse = {
+export type PaginationType = {
   count: number;
-  next: number;
-  previous: number;
+  next: string | null;
+  previous: string | null;
+};
+
+export type PlaceResponse = PaginationType & {
   results: Place[];
 };
 

@@ -12,11 +12,11 @@ export const PlacesFilters = () => {
   const [filters, setFilters] = useState<undefined | Filter>(undefined);
 
   const searchParams = useSearchParams();
-  const selectedMetro = searchParams.get('metroes')?.split(',') || [];
-  const selectedFeatures = searchParams.get('features')?.split(',') || [];
-  const selectedTypes = searchParams.get('types')?.split(',') || [];
-  const selectedCuisines = searchParams.get('cuisine')?.split(',') || [];
-  
+  const selectedMetro = searchParams.get('metro_ids')?.split(',') || [];
+  const selectedFeatures = searchParams.get('feature_ids')?.split(',') || [];
+  const selectedTypes = searchParams.get('type_ids')?.split(',') || [];
+  const selectedCuisines = searchParams.get('cuisine_ids')?.split(',') || [];
+
   const handleToggle = (groupId: number) => {
     setOpenGroupId((prevGroupId) => (prevGroupId === groupId ? null : groupId));
   };
@@ -38,6 +38,7 @@ export const PlacesFilters = () => {
         params.set(name, value);
       }
 
+      params.delete('page');
       return params.toString();
     },
     [searchParams]
@@ -47,7 +48,7 @@ export const PlacesFilters = () => {
 
   return (
     <aside className={styles.filters}>
-      <p className={styles.filters__title}>filters</p>
+      <p className={styles.filters__title}>Фільтри</p>
 
       {/* METROS */}
       <div className={styles.filters__section}>
@@ -90,7 +91,7 @@ export const PlacesFilters = () => {
                         let linkUrl =
                           pathname +
                           '?' +
-                          createQueryString('metroes', metroParams.join(','));
+                          createQueryString('metro_ids', metroParams.join(','));
 
                         return (
                           <Link
@@ -138,7 +139,7 @@ export const PlacesFilters = () => {
                         let linkUrl =
                           pathname +
                           '?' +
-                          createQueryString('metroes', metroParams.join(','));
+                          createQueryString('metro_ids', metroParams.join(','));
 
                         return (
                           <Link
@@ -186,7 +187,7 @@ export const PlacesFilters = () => {
                         let linkUrl =
                           pathname +
                           '?' +
-                          createQueryString('metroes', metroParams.join(','));
+                          createQueryString('metro_ids', metroParams.join(','));
 
                         return (
                           <Link
@@ -226,7 +227,7 @@ export const PlacesFilters = () => {
 
       {/* TYPES */}
       <div className={styles.filters__section}>
-        <p className={styles.filters__section_title}>Places types:</p>
+        <p className={styles.filters__section_title}>Тип закладу:</p>
         <ul className={styles.filters__section_list}>
           {filters?.cafe_types.map((type) => {
             let typesParams = [...(selectedTypes || [])];
@@ -241,7 +242,7 @@ export const PlacesFilters = () => {
             let linkUrl =
               pathname +
               '?' +
-              createQueryString('types', typesParams.join(','));
+              createQueryString('type_ids', typesParams.join(','));
 
             return (
               <Link
@@ -264,7 +265,7 @@ export const PlacesFilters = () => {
                     htmlFor={`subway_${type.slug}`}
                     className={styles.filters__link_text}
                   >
-                    {type.slug}
+                    {type.name}
                   </label>
                 </li>
               </Link>
@@ -275,7 +276,7 @@ export const PlacesFilters = () => {
 
       {/* FEATURES */}
       <div className={styles.filters__section}>
-        <p className={styles.filters__section_title}>Places features:</p>
+        <p className={styles.filters__section_title}>Особливості:</p>
         <ul className={styles.filters__section_list}>
           {filters?.features.map((feature) => {
             let featuresParams = [...(selectedFeatures || [])];
@@ -291,7 +292,7 @@ export const PlacesFilters = () => {
             let linkUrl =
               pathname +
               '?' +
-              createQueryString('features', featuresParams.join(','));
+              createQueryString('feature_ids', featuresParams.join(','));
 
             return (
               <Link
@@ -325,7 +326,7 @@ export const PlacesFilters = () => {
 
       {/*Cuisines */}
       <div className={styles.filters__section}>
-        <p className={styles.filters__section_title}>Places cuisines:</p>
+        <p className={styles.filters__section_title}>Кухня:</p>
         <ul className={styles.filters__section_list}>
           {filters?.cuisine.map((type) => {
             let cuisinesParams = [...(selectedCuisines || [])];
@@ -340,7 +341,7 @@ export const PlacesFilters = () => {
             let linkUrl =
               pathname +
               '?' +
-              createQueryString('cuisine', cuisinesParams.join(','));
+              createQueryString('cuisine_ids', cuisinesParams.join(','));
 
             return (
               <Link
@@ -363,7 +364,7 @@ export const PlacesFilters = () => {
                     htmlFor={`subway_${type.slug}`}
                     className={styles.filters__link_text}
                   >
-                    {type.slug}
+                    {type.name}
                   </label>
                 </li>
               </Link>

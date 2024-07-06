@@ -1,28 +1,34 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+import s from './Login.module.scss';
+import { toast } from 'sonner';
 
 export const Login = () => {
   const { data: session } = useSession();
-  // console.log('Status:', session);
-  // if (session?.user) {
-  //   console.log('user:', session);
-  // }
+
+  useEffect(() => {
+    if (session?.user.is_email_verified === false) {
+      toast.warning('Активуйте Вашу Email адресу!');
+    }
+  }, [session]);
 
   return (
-    <div>
+    <>
       {session?.user ? (
-        <>
-          {/* <Link href={'/profile'}>Profile</Link> */}
-          <button onClick={() => signOut({ callbackUrl: '/' })}>Вийти</button>
-          {/* <Link href={'/signup'}>Reg</Link> */}
-        </>
+        <button
+          onClick={() => signOut({ callbackUrl: '/', redirect: false })}
+          className={s.login}
+        >
+          Вийти
+        </button>
       ) : (
-        <Link href={'/signin'}>Увійти</Link>
-        // <button onClick={() => signIn()}>SIGN IN</button>
+        <Link href={'/signin'} className={s.login}>
+          Увійти
+        </Link>
       )}
-    </div>
+    </>
   );
 };

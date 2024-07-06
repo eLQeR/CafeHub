@@ -1,5 +1,4 @@
 import { AUTH } from '@/services/auth';
-import { error } from 'console';
 import type { NextAuthOptions } from 'next-auth';
 import Credential from 'next-auth/providers/credentials';
 // import GoogleProvider from 'next-auth/providers/google';

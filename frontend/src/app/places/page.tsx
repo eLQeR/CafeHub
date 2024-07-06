@@ -6,38 +6,43 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { PlacesFilters } from '@/components/PlacesFilters';
 import { getPlaces } from '@/services/getPlaces';
-import { Place } from '@/types/types';
+import { PaginationType, Place } from '@/types/types';
 import { RatingStar } from '@/components/RatingStar';
 import { SortBy } from '@/components/SortBy/SortBy';
+import { Pagination } from '@/components/Pagination';
 
 const Places = () => {
   const PlaceContent = () => {
-    const [sortVarVisible, setSortVarVisible] = useState(false);
     const searchParams = useSearchParams();
-
+    const [sortVarVisible, setSortVarVisible] = useState(false);
     const [places, setPlaces] = useState<Place[] | []>([]);
+    const [paginationData, setPaginationData] = useState<PaginationType>({
+      previous: null,
+      next: null,
+      count: 0,
+    });
 
     useEffect(() => {
       const params = new URLSearchParams();
 
-      const metrosParam = searchParams.get('metroes');
+      const metrosParam = searchParams.get('metro_ids');
       if (metrosParam) {
-        params.append('metroes', metrosParam);
+        params.append('metro_ids', metrosParam);
       }
 
-      const typesParam = searchParams.get('types');
+      const typesParam = searchParams.get('type_ids');
       if (typesParam) {
-        params.append('types', typesParam);
+        params.append('type_ids', typesParam);
       }
 
-      const featuresParam = searchParams.get('features');
+      const featuresParam = searchParams.get('feature_ids');
       if (featuresParam) {
-        params.append('features', featuresParam);
+        params.append('feature_ids', featuresParam);
       }
 
-      const cuisinesParam = searchParams.get('cuisine');
+      const cuisinesParam = searchParams.get('cuisine_ids');
       if (cuisinesParam) {
-        params.append('cuisines', cuisinesParam);
+        params.append('cuisine_ids', cuisinesParam);
       }
 
       const orderingParam = searchParams.get('ordering');
@@ -45,20 +50,27 @@ const Places = () => {
         params.append('ordering', orderingParam);
       }
 
-      // console.log('PARAMS:', params.toString(), params.get('ordering'));
+      const pageParam = searchParams.get('page');
+      if (pageParam) {
+        params.append('page', pageParam);
+      }
 
       getPlaces(`?${params.toString()}`).then((data) => {
-        setPlaces(data);
+        setPlaces(data.results);
+        setPaginationData({
+          previous: data.previous,
+          next: data.next,
+          count: data.count,
+        });
       });
     }, [searchParams]);
+
     return (
       <div className={styles.page__content}>
         <PlacesFilters />
         <div className={styles.catalog}>
           <div className={styles.catalog__top}>
-            <h2 className={styles.catalog__title}>
-              Catalog of restaurants and cafes
-            </h2>
+            <h1 className={styles.catalog__title}>Каталог закладів Києва</h1>
             <SortBy
               isVisible={sortVarVisible}
               setIsVisible={setSortVarVisible}
@@ -87,13 +99,13 @@ const Places = () => {
                       <p className={styles.catalog__item_mediumCheck}>
                         Середній чек від: {` `}
                         <b className={styles.catalog__item_mediumCheck_data}>
-                          {place.medium_check}грн
+                          {place.medium_check}{` `}грн
                         </b>
                       </p>
                     </div>
                     <div className={styles.catalog__item_row}>
                       <button className={styles.catalog__item_moreInfoBtn}>
-                        More info
+                        Детальніше
                       </button>
                       <RatingStar mark={place.mark} />
                     </div>
@@ -102,6 +114,9 @@ const Places = () => {
               );
             })}
           </div>
+          {paginationData.count > 2 && (
+            <Pagination paginationData={paginationData} />
+          )}
         </div>
       </div>
     );

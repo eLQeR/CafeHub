@@ -1,12 +1,11 @@
-import { DetailsPlace, Filter, Place, PlaceResponse } from '@/types/types';
+import { DetailsPlace, Filter, PlaceResponse } from '@/types/types';
 import { API_URL } from './constants';
 
 
-
-export const getPlaces = async (params: string = ''): Promise<Place[]> => {
+export const getPlaces = async (params: string = ''): Promise<PlaceResponse> => {
   const data = await fetch(`${API_URL}/catalog/cafes${params}`);
 
-  const { results }: PlaceResponse = await data.json();
+  const results: PlaceResponse = await data.json();
 
   return results;
 };
