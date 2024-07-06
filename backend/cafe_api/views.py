@@ -1,7 +1,8 @@
 from django.core.exceptions import FieldError
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter, OpenApiExample
 from rest_framework.exceptions import ValidationError
+from rest_framework.generics import GenericAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, action
@@ -243,23 +244,43 @@ class ReviewViewSet(viewsets.ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
-@extend_schema(
-    summary="Get filters for cafes",
-    description="User filters for filtering cafes.",
-    methods=["GET"],
-)
-@api_view(["GET"])
-def get_filters_view(request, *args, **kwargs):
-    return Response(
-        {
-            "metro": {
-                "green": MetroSerializer(Metro.objects.filter(line_id=1), many=True).data,
-                "red": MetroSerializer(Metro.objects.filter(line_id=2), many=True).data,
-                "blue": MetroSerializer(Metro.objects.filter(line_id=3), many=True).data,
-            },
-            "features": FeatureSerializer(Feature.objects.all(), many=True).data,
-            "cafe_types": EstablishmentTypeSerializer(EstablishmentType.objects.all(), many=True).data,
-            "cuisine": CuisineSerializer(Cuisine.objects.all(), many=True).data
-        },
-        status=200,
+class FiltersView(GenericAPIView):
+    @extend_schema(
+        summary="Get filters for cafes",
+        description="User get filters for filtering cafes.",
+        methods=["GET"],
     )
+    def get(self, request, *args, **kwargs):
+        return Response(
+            {
+                "metro": {
+                    "green": MetroSerializer(Metro.objects.filter(line_id=1), many=True).data,
+                    "red": MetroSerializer(Metro.objects.filter(line_id=2), many=True).data,
+                    "blue": MetroSerializer(Metro.objects.filter(line_id=3), many=True).data,
+                },
+                "features": FeatureSerializer(Feature.objects.all(), many=True).data,
+                "cafe_types": EstablishmentTypeSerializer(EstablishmentType.objects.all(), many=True).data,
+                "cuisine": CuisineSerializer(Cuisine.objects.all(), many=True).data
+            },
+            status=200,
+        )
+
+
+class IndexView(GenericAPIView):
+    @extend_schema(
+        summary="Get cafes for index page",
+        description="User get cafes for index page.",
+        methods=["GET"],
+    )
+    def get(self, request, *args, **kwargs):
+        new_cafes = Cafe.objects.order_by("-id")[:5]
+        popular_cafes = Cafe.objects.annotate(
+            total_reviews=Count("reviews")
+        ).order_by("-total_reviews")[:5]
+        return Response(
+            {
+                "new": CafeListSerializer(new_cafes, many=True).data,
+                "popular": CafeListSerializer(popular_cafes, many=True).data,
+            },
+            status=200,
+        )
