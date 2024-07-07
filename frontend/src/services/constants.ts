@@ -1,19 +1,21 @@
 export const API_URL = 'http://localhost:8000/api';
 
+export const PAGINATION_ITEM_LIMIT = 2
+
 export const MetroLines = [
   {
     id: 0,
-    name: 'Red line',
+    name: 'Червона лінія',
     slug: 'red',
   },
   {
     id: 1,
-    name: 'Blue line',
+    name: 'Синя лінія',
     slug: 'blue',
   },
   {
     id: 2,
-    name: 'Green line',
+    name: 'Зелена лінія',
     slug: 'green',
   },
 ];

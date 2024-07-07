@@ -30,7 +30,7 @@ export const Pagination: React.FC<Props> = ({ paginationData }) => {
   );
 
   let prevPageIndex = '';
-  console.log('=>', paginationData.previous?.includes('page='))
+
   if (
     paginationData.previous !== null &&
     !paginationData.previous?.includes('page=')
@@ -38,9 +38,7 @@ export const Pagination: React.FC<Props> = ({ paginationData }) => {
     prevPageIndex = '1';
   } else if (paginationData.previous !== null) {
     prevPageIndex =
-      paginationData.previous
-        ?.split('page=')[1]
-        .split('&')[0] || '';
+      paginationData.previous?.split('page=')[1].split('&')[0] || '';
   }
 
   let prevPageUrl = pathname + '?' + createQueryString('page', prevPageIndex);
@@ -50,8 +48,7 @@ export const Pagination: React.FC<Props> = ({ paginationData }) => {
     '?' +
     createQueryString(
       'page',
-      paginationData.next?.split('page=')[1].split('&')[0] ||
-        ''
+      paginationData.next?.split('page=')[1].split('&')[0] || ''
     );
 
   if (paginationData.previous === null) {
@@ -60,9 +57,6 @@ export const Pagination: React.FC<Props> = ({ paginationData }) => {
   if (paginationData.next === null) {
     nextPageUrl = '';
   }
-
-  // console.log('LINK1', prevPageUrl);
-  console.log('LINK2', nextPageUrl);
 
   return (
     <div className={s.pagination}>

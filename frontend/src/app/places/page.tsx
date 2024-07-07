@@ -10,6 +10,8 @@ import { PaginationType, Place } from '@/types/types';
 import { RatingStar } from '@/components/RatingStar';
 import { SortBy } from '@/components/SortBy/SortBy';
 import { Pagination } from '@/components/Pagination';
+import { PlaceList } from '@/components/PlaceList';
+import { PAGINATION_ITEM_LIMIT } from '@/services/constants';
 
 const Places = () => {
   const PlaceContent = () => {
@@ -70,51 +72,18 @@ const Places = () => {
         <PlacesFilters />
         <div className={styles.catalog}>
           <div className={styles.catalog__top}>
-            <h1 className={styles.catalog__title}>Каталог закладів Києва</h1>
+            <h1 className={styles.catalog__title}>
+              Каталог закладів Києва. Закладів: {paginationData.count}
+            </h1>
             <SortBy
               isVisible={sortVarVisible}
               setIsVisible={setSortVarVisible}
             />
           </div>
           <div className={styles.catalog__list}>
-            {places.map((place) => {
-              return (
-                <Link
-                  href={`places/${place.id}`}
-                  className={styles.catalog__item}
-                  key={place.id}
-                >
-                  <div className={styles.catalog__item_imageContainer}>
-                    <Image
-                      unoptimized
-                      src={place.main_photo}
-                      fill
-                      alt={`main image ${place.type} ${place.name}`}
-                    ></Image>
-                  </div>
-                  <div className={styles.catalog__item_infoContainer}>
-                    <p className={styles.catalog__item_type}>{place.type}</p>
-                    <p className={styles.catalog__item_name}>{place.name}</p>
-                    <div className={styles.catalog__item_row}>
-                      <p className={styles.catalog__item_mediumCheck}>
-                        Середній чек від: {` `}
-                        <b className={styles.catalog__item_mediumCheck_data}>
-                          {place.medium_check}{` `}грн
-                        </b>
-                      </p>
-                    </div>
-                    <div className={styles.catalog__item_row}>
-                      <button className={styles.catalog__item_moreInfoBtn}>
-                        Детальніше
-                      </button>
-                      <RatingStar mark={place.mark} />
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+            <PlaceList places={places} />
           </div>
-          {paginationData.count > 2 && (
+          {paginationData.count > PAGINATION_ITEM_LIMIT && (
             <Pagination paginationData={paginationData} />
           )}
         </div>
