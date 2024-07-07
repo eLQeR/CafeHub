@@ -20,26 +20,8 @@
 
   &__searchContainer {
     width: 300px;
-    padding-right: 10px;
     border-left: 1px solid #c1c3c4;
     border-right: 1px solid #c1c3c4;
-  }
-
-  &__search {
-    width: 100%;
-    outline: none;
-    padding-inline: 15px;
-    border: none;
-    height: 50px;
-    font-size: 18px;
-    background-image: url('../../../public/img/svg/search.svg');
-    background-position: right;
-    background-repeat: no-repeat;
-    background-color: transparent;
-
-    &:hover {
-      background-image: url('../../../public/img/svg/search-dark.svg');
-    }
   }
 
   &__burger {
