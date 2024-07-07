@@ -1,6 +1,6 @@
 export const API_URL = 'http://localhost:8000/api';
 
-export const PAGINATION_ITEM_LIMIT = 2
+export const PAGINATION_ITEM_LIMIT = 2;
 
 export const MetroLines = [
   {
@@ -19,7 +19,23 @@ export const MetroLines = [
     slug: 'green',
   },
 ];
-
+export const COLLECTIONS = [
+  {
+    url: 'places?feature_ids=2%2C17',
+    imgUrl: '/img/kids-cafes2.jpg',
+    name: 'Дитячі заклади',
+  },
+  {
+    url: 'places?feature_ids=6&type_ids=1',
+    imgUrl: '/img/live-music-bars3.jpg',
+    name: 'Бари з живою музикою',
+  },
+  {
+    url: 'places?feature_ids=3&cuisine_ids=11',
+    imgUrl: '/img/vegan-burger.jpg',
+    name: 'Бургери для Веганів',
+  },
+];
 export const PLACELIST = [
   {
     id: 0,

@@ -8,27 +8,12 @@ import { SearchField } from '@/components/SearchField';
 import { useEffect, useState } from 'react';
 import { API } from '@/services/apiRequests';
 import { HomePagePlaceType } from '@/types/types';
+import { COLLECTIONS } from '@/services/constants';
 
 export default function Home() {
   const [newPlaces, setNewPlaces] = useState<HomePagePlaceType[]>([]);
   const [popularPlaces, setPopularPlaces] = useState<HomePagePlaceType[]>([]);
-  const filtersData = [
-    {
-      url: '/type:cafe;osobennost:detskaya-komnata,detskie-master-klassy,detskiy-stulchik,detskoe-menyu/',
-      imgUrl: '/img/kids-cafes2.jpg',
-      name: 'kids café',
-    },
-    {
-      url: '/type:bar;osobennost:zhivaya-muzyka/',
-      imgUrl: '/img/live-music-bars3.jpg',
-      name: 'live music bars',
-    },
-    {
-      url: '/kuhnja:burgeri,vegeterianskaja/',
-      imgUrl: '/img/vegan-burger.jpg',
-      name: 'Vegan burgers',
-    },
-  ];
+
 
   useEffect(() => {
     API.getHomePageData().then((data) => {
@@ -56,20 +41,20 @@ export default function Home() {
         </div>
 
         <div className={styles.filters}>
-          {filtersData.map((filterItem) => (
+          {COLLECTIONS.map((item) => (
             <Link
-              href={filterItem.url}
+              href={item.url}
               className={styles.filters__item}
-              key={filterItem.name}
+              key={item.name}
             >
               <Image
-                src={filterItem.imgUrl}
+                src={item.imgUrl}
                 fill
-                alt={filterItem.name}
+                alt={item.name}
                 style={{ objectFit: 'cover' }}
               />
 
-              <p className={styles.filters__item_title}>{filterItem.name}</p>
+              <p className={styles.filters__item_title}>{item.name}</p>
             </Link>
           ))}
         </div>
