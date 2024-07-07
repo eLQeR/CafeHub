@@ -81,7 +81,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                 {place.features.map((feature) => (
                   <Link
                     key={feature.id}
-                    href={`/places?features=${feature.id}`}
+                    href={`/places?feature_ids=${feature.id}`}
                     className={styles.page__link}
                   >
                     {feature.name}
@@ -91,7 +91,7 @@ export default function Page({ params }: { params: { slug: string } }) {
               <div className={styles['page__right--features']}>
                 Кухня:{' '}
                 <Link
-                  href={`/places?cuisine=${place.cuisine.id}`}
+                  href={`/places?cuisine_ids=${place.cuisine.id}`}
                   className={styles.page__link}
                 >
                   {place.cuisine.name}

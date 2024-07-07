@@ -6,20 +6,19 @@ import styles from './Slider.module.scss';
 import cn from 'classnames';
 type Place = {
   id: number;
-  img: string;
-  type: string;
-  link: string;
   name: string;
-  metro: string;
-  comments: number;
+  address: string;
+  medium_check: string;
+  type: string;
+  slug: string;
+  main_photo: string;
 };
 type Props = {
   sliderTitle: string;
-  places: Place[]
+  places: Place[];
 };
 
 export const Slider: FC<Props> = ({ sliderTitle, places }) => {
-
   const [activeArrowLeft, setActiveArrowLeft] = useState(false);
   const [activeArrowRight, setActiveArrowRight] = useState(true);
   const slider = useRef<HTMLUListElement>(null);
@@ -78,9 +77,9 @@ export const Slider: FC<Props> = ({ sliderTitle, places }) => {
           {places.map((place) => (
             <li className={styles.placeSlider__cell} key={place.id} ref={cell}>
               <div className={styles.placeSlider__logo}>
-                <Link href={`places${place.link}`}>
+                <Link href={`places/${place.id}`}>
                   <Image
-                    src={place.img}
+                    src={`http://127.0.0.1:8000/${place.main_photo}`}
                     alt={`Slider place img ${place.id}`}
                     fill
                     style={{ objectFit: 'cover' }}
@@ -90,23 +89,6 @@ export const Slider: FC<Props> = ({ sliderTitle, places }) => {
               <div className={styles.placeSlider__bottom}>
                 <p className={styles.placeSlider__type}>{place.type}</p>
                 <h3 className={styles.placeSlider__name}>{place.name}</h3>
-                <div className={styles.placeSlider__location}>
-                  <div className={styles.placeSlider__metro}>
-                    <Image
-                      src={'/img/svg/metro.svg'}
-                      width={21}
-                      height={21}
-                      alt='metro'
-                    />
-                    <span className={styles.placeSlider__metroName}>
-                      {place.metro}
-                    </span>
-                  </div>
-
-                  <a href='/' className={styles.placeSlider__reviews}>
-                    {place.comments} отзывов
-                  </a>
-                </div>
               </div>
             </li>
           ))}

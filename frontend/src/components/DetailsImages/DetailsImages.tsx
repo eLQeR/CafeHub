@@ -40,7 +40,6 @@ export const DetailsImages: React.FC<Props> = ({
   };
 
   const goRight = () => {
-    console.log(slider.current);
     if (slider.current) {
       const currentScroll = slider.current.scrollLeft;
       const maxScroll = slider.current.scrollWidth - slider.current.offsetWidth;

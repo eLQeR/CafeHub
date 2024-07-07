@@ -1,68 +1,17 @@
+'use client';
+
 import { Slider } from '@/components/Slider';
 import styles from './page.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
 import { SearchField } from '@/components/SearchField';
+import { useEffect, useState } from 'react';
+import { API } from '@/services/apiRequests';
+import { HomePagePlaceType } from '@/types/types';
 
 export default function Home() {
-  const places = [
-    {
-      id: 0,
-      img: '/data/1.jpg',
-      type: 'Ресторан',
-      link: '/restoran-mamay',
-      name: 'Mamay',
-      metro: 'Героев Днепра',
-      comments: 16,
-    },
-    {
-      id: 1,
-      img: '/data/2.jpg',
-      type: 'Ресторан',
-      link: '/restoran-la-maison',
-      name: 'Ресторан «La Maison»',
-      metro: 'Лукьяновская',
-      comments: 20,
-    },
-    {
-      id: 2,
-      img: '/data/3.jpg',
-      type: 'Ресторан',
-      link: '/restoran-gogi-dnprovska-nab',
-      name: 'Ресторан «Gogi Днепровская наб.»',
-      metro: 'Осокорки',
-      comments: 16,
-    },
-    {
-      id: 3,
-      img: '/data/4.jpg',
-      type: 'Ресторан',
-      link: '',
-      name: 'Ресторан «Porto Maltese (Порто Мальтезе)»',
-      metro: 'Арсенальная',
-      comments: 52,
-    },
-    {
-      id: 4,
-      img: '/data/5.jpg',
-      type: 'Ресторан',
-      link: '/restoran-porto-maltese',
-      name: 'Бистро Пекаря на Тарасовской',
-      metro: 'Олимпийская',
-      comments: 31,
-    },
-    {
-      id: 5,
-      img: '/data/5.jpg',
-      type: 'Ресторан',
-      link: '/restoran-bistro-pekarya-na-tarasovskoy',
-      name: 'Бистро Пекаря на Тарасовской',
-      metro: 'Олимпийская',
-      comments: 31,
-    },
-  ];
-  const places2 = [...places];
-
+  const [newPlaces, setNewPlaces] = useState<HomePagePlaceType[]>([]);
+  const [popularPlaces, setPopularPlaces] = useState<HomePagePlaceType[]>([]);
   const filtersData = [
     {
       url: '/type:cafe;osobennost:detskaya-komnata,detskie-master-klassy,detskiy-stulchik,detskoe-menyu/',
@@ -80,6 +29,13 @@ export default function Home() {
       name: 'Vegan burgers',
     },
   ];
+
+  useEffect(() => {
+    API.getHomePageData().then((data) => {
+      setNewPlaces(data.new);
+      setPopularPlaces(data.popular);
+    });
+  }, []);
 
   return (
     <>
@@ -118,11 +74,12 @@ export default function Home() {
           ))}
         </div>
 
-        <Slider sliderTitle={'New places'} places={places} />
-        <Slider
-          sliderTitle={'Popular places'}
-          places={places2.sort((a, b) => b.comments - a.comments)}
-        />
+        {newPlaces.length > 0 && (
+          <Slider sliderTitle={'Нові заклади'} places={newPlaces} />
+        )}
+        {popularPlaces.length > 0 && (
+          <Slider sliderTitle={'Популярні заклади'} places={popularPlaces} />
+        )}
       </main>
     </>
   );

@@ -1,4 +1,4 @@
-import { PlaceResponse } from '@/types/types';
+import { HomePageDataType, PlaceResponse } from '@/types/types';
 import { API_URL } from './constants';
 
 const getSearchData = async (
@@ -16,6 +16,15 @@ const getSearchData = async (
   return results;
 };
 
+const getHomePageData = async () => {
+  const data = await fetch(`${API_URL}/catalog/index`);
+
+  const results: HomePageDataType = await data.json();
+
+  return results;
+}
+
 export const API = {
   getSearchData,
+  getHomePageData
 };

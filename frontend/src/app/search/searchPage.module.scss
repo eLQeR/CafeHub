@@ -7,7 +7,6 @@
   }
 }
 .catalog {
-  // background-color: rgba(153, 205, 50, 0.247);
   flex: 1;
   padding: 10px;
 
@@ -24,9 +23,9 @@
     text-transform: uppercase;
   }
   &__list {
+    margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    // justify-content: center;
   }
 }

@@ -97,3 +97,18 @@ export type CafeUser = {
   is_staff: boolean;
   is_email_verified: boolean;
 };
+
+export type HomePagePlaceType = {
+  id: number;
+  name: string;
+  address: string;
+  medium_check: string;
+  type: string;
+  slug: string;
+  main_photo: string;
+};
+
+export type HomePageDataType = {
+  new: HomePagePlaceType[];
+  popular: HomePagePlaceType[];
+};

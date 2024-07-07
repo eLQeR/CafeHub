@@ -1,8 +1,6 @@
 'use client';
 import React, { useEffect, useState, Suspense } from 'react';
 import styles from './places.module.scss';
-import Image from 'next/image';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { PlacesFilters } from '@/components/PlacesFilters';
 import { getPlaces } from '@/services/getPlaces';
@@ -12,10 +10,12 @@ import { SortBy } from '@/components/SortBy/SortBy';
 import { Pagination } from '@/components/Pagination';
 import { PlaceList } from '@/components/PlaceList';
 import { PAGINATION_ITEM_LIMIT } from '@/services/constants';
+import { Loader } from '@/components/Loader';
 
 const Places = () => {
   const PlaceContent = () => {
     const searchParams = useSearchParams();
+    const [isLoading, setIsLoading] = useState(false);
     const [sortVarVisible, setSortVarVisible] = useState(false);
     const [places, setPlaces] = useState<Place[] | []>([]);
     const [paginationData, setPaginationData] = useState<PaginationType>({
@@ -25,6 +25,7 @@ const Places = () => {
     });
 
     useEffect(() => {
+      setIsLoading(true);
       const params = new URLSearchParams();
 
       const metrosParam = searchParams.get('metro_ids');
@@ -57,36 +58,48 @@ const Places = () => {
         params.append('page', pageParam);
       }
 
-      getPlaces(`?${params.toString()}`).then((data) => {
-        setPlaces(data.results);
-        setPaginationData({
-          previous: data.previous,
-          next: data.next,
-          count: data.count,
-        });
-      });
+      getPlaces(`?${params.toString()}`)
+        .then((data) => {
+          setPlaces(data.results);
+          setPaginationData({
+            previous: data.previous,
+            next: data.next,
+            count: data.count,
+          });
+        })
+        .finally(() => setIsLoading(false));
     }, [searchParams]);
 
     return (
       <div className={styles.page__content}>
         <PlacesFilters />
-        <div className={styles.catalog}>
-          <div className={styles.catalog__top}>
-            <h1 className={styles.catalog__title}>
-              Каталог закладів Києва. Закладів: {paginationData.count}
-            </h1>
-            <SortBy
-              isVisible={sortVarVisible}
-              setIsVisible={setSortVarVisible}
-            />
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div className={styles.catalog}>
+            {places.length === 0 ? (
+              <h2>За вибраними фільтрами жодного закладу не знайдено</h2>
+            ) : (
+              <>
+                <div className={styles.catalog__top}>
+                  <h1 className={styles.catalog__title}>
+                    Каталог закладів Києва. Закладів: {paginationData.count}
+                  </h1>
+                  <SortBy
+                    isVisible={sortVarVisible}
+                    setIsVisible={setSortVarVisible}
+                  />
+                </div>
+                <div className={styles.catalog__list}>
+                  <PlaceList places={places} />
+                </div>
+                {paginationData.count > PAGINATION_ITEM_LIMIT && (
+                  <Pagination paginationData={paginationData} />
+                )}
+              </>
+            )}
           </div>
-          <div className={styles.catalog__list}>
-            <PlaceList places={places} />
-          </div>
-          {paginationData.count > PAGINATION_ITEM_LIMIT && (
-            <Pagination paginationData={paginationData} />
-          )}
-        </div>
+        )}
       </div>
     );
   };
