@@ -2,6 +2,7 @@ import { Slider } from '@/components/Slider';
 import styles from './page.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
+import { SearchField } from '@/components/SearchField';
 
 export default function Home() {
   const places = [
@@ -79,27 +80,23 @@ export default function Home() {
       name: 'Vegan burgers',
     },
   ];
+
   return (
     <>
       <div className={styles.hero}>
         <Image src='/hero.png' fill alt='logo' style={{ objectFit: 'cover' }} />
         <div className={styles.hero__content}>
           <h1 className={styles.hero__title}>
-            Find the best restaurants, cafes and bars in Kyiv city
+            Знайдіть найкращі ресторани, кафе та бари Київа
           </h1>
           <div className={styles.hero__row}>
-            <input
-              type='text'
-              placeholder='Place name ...'
-              className={styles.hero__search}
-            />
-            <button className={styles.hero__btn}>Search</button>
+            <SearchField style='hero' />
           </div>
         </div>
       </div>
       <main className={styles.page__container}>
         <div className={styles.filters__top}>
-          <h3 className={styles.filters__title}>Collections for you</h3>
+          <h3 className={styles.filters__title}>Колекції для вас</h3>
         </div>
 
         <div className={styles.filters}>

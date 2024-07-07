@@ -6,13 +6,13 @@ import { usePathname } from 'next/navigation';
 import styles from './Header.module.scss';
 import cn from 'classnames';
 import { Login } from '../Login';
-import { useRouter } from 'next/navigation';
+
+import { SearchField } from '../SearchField';
 
 export const Header = () => {
   const [isBurgerVisible, setIsBurgerVisible] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+
   const pathname = usePathname();
-  const router = useRouter();
   const linkList = [
     {
       id: 0,
@@ -37,12 +37,6 @@ export const Header = () => {
       document.body.classList.remove('menu-show');
     } else {
       document.body.classList.add('menu-show');
-    }
-  };
-
-  const keyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && searchValue !== '') {
-      router.push(`/search?name=${searchValue}`);
     }
   };
 
@@ -81,16 +75,7 @@ export const Header = () => {
 
         <div className={styles.header__right}>
           <div className={styles.header__searchContainer}>
-            <input
-              type='text'
-              placeholder='Search...'
-              className={styles.header__search}
-              value={searchValue}
-              onKeyDown={(e) => keyDownHandler(e)}
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-              }}
-            />
+            <SearchField style={'header'} />
           </div>
 
           <Login />

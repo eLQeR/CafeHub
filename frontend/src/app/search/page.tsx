@@ -35,7 +35,9 @@ const page = () => {
   return (
     <main>
       <div className={styles.page__container}>
-        <h1>Результати пошуку Закладів: {paginationData.count}</h1>
+        <h1>Результати пошуку</h1>
+        <p>Запит: {searchRequest}</p>
+        <p>Закладів: {paginationData.count}</p>
         <div className={styles.catalog__list}>
           <PlaceList places={places} />
         </div>
