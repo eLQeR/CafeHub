@@ -3,7 +3,7 @@
   height: 50px;
   border: none;
   background-color: transparent;
-  
+
   text-decoration: none;
   padding: 15px 15px;
   display: block;
@@ -11,7 +11,13 @@
   font-size: 16px;
   cursor: pointer;
 
+  display: flex;
+
   &:hover {
     background-color: rgba(128, 128, 128, 0.568);
+  }
+  svg {
+    width: 20px;
+    margin-left: 10px;
   }
 }

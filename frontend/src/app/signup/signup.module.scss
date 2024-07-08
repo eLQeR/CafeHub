@@ -62,3 +62,17 @@
     margin: 20px auto 0;
   }
 }
+
+.warning {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 20px;
+  svg {
+    width: 40px;
+    height: 40px;
+  }
+  p {
+    max-width: 300px;
+  }
+}
