@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Slider.module.scss';
 import cn from 'classnames';
+import { IMG_URL } from '@/services/constants';
 type Place = {
   id: number;
   name: string;
@@ -79,7 +80,7 @@ export const Slider: FC<Props> = ({ sliderTitle, places }) => {
               <div className={styles.placeSlider__logo}>
                 <Link href={`places/${place.id}`}>
                   <Image
-                    src={`http://127.0.0.1:8000/${place.main_photo}`}
+                    src={`${IMG_URL}${place.main_photo}`}
                     alt={`Slider place img ${place.id}`}
                     fill
                     style={{ objectFit: 'cover' }}

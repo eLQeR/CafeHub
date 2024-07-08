@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './SearchField.module.scss';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import cn from 'classnames';
 
 export const SearchField = ({ style }: { style: string }) => {
+  const searchParams = useSearchParams();
+  const searchRequest = searchParams.get('name');
   const [searchValue, setSearchValue] = useState('');
   const [err, setErr] = useState(false);
 
@@ -30,13 +32,19 @@ export const SearchField = ({ style }: { style: string }) => {
     }
   };
 
+  useEffect(() => {
+    if (searchRequest !== null) {
+      setSearchValue(searchRequest);
+    }
+  }, [searchParams]);
+
   return (
     <>
       <input
         type='text'
         placeholder='Пошук...'
         className={cn(s[style], {
-          [s[style+'__war']]: err,
+          [s[style + '__war']]: err,
         })}
         value={searchValue}
         onKeyDown={(e) => keyDownHandler(e)}
