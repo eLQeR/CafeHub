@@ -90,6 +90,8 @@
     cursor: pointer;
     border: 1px solid grey;
     border-radius: 10px;
+    background-color: white;
+    font-size: 19px;
     &:disabled {
       cursor: no-drop;
     }
