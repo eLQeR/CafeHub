@@ -1,19 +1,19 @@
 'use client';
 import styles from './place.module.scss';
 import { DetailsImages } from '@/components/DetailsImages';
-import { getPlace } from '@/services/getPlaces';
 import { useEffect, useState } from 'react';
 import { DetailsPlace } from '@/types/types';
 import { RatingStar } from '@/components/RatingStar';
 import Link from 'next/link';
 import { ReviewsList } from '@/components/Reviews';
+import { API } from '@/services/apiRequests';
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [place, setPlace] = useState<undefined | DetailsPlace>(undefined);
   const [mainImg, setMainImg] = useState('');
 
   useEffect(() => {
-    getPlace(params.slug).then((data) => {
+    API.getPlace(params.slug).then((data) => {
       setPlace(data);
       setMainImg(data.images[0].image);
     });

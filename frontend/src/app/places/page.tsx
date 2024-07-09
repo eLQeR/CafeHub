@@ -3,14 +3,13 @@ import React, { useEffect, useState, Suspense } from 'react';
 import styles from './places.module.scss';
 import { useSearchParams } from 'next/navigation';
 import { PlacesFilters } from '@/components/PlacesFilters';
-import { getPlaces } from '@/services/getPlaces';
 import { PaginationType, Place } from '@/types/types';
-import { RatingStar } from '@/components/RatingStar';
 import { SortBy } from '@/components/SortBy/SortBy';
 import { Pagination } from '@/components/Pagination';
 import { PlaceList } from '@/components/PlaceList';
 import { PAGINATION_ITEM_LIMIT } from '@/services/constants';
 import { Loader } from '@/components/Loader';
+import { API } from '@/services/apiRequests';
 
 const Places = () => {
   const PlaceContent = () => {
@@ -58,7 +57,7 @@ const Places = () => {
         params.append('page', pageParam);
       }
 
-      getPlaces(`?${params.toString()}`)
+      API.getPlaces(`?${params.toString()}`)
         .then((data) => {
           setPlaces(data.results);
           setPaginationData({

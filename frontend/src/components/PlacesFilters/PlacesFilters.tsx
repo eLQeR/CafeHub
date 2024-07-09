@@ -2,10 +2,10 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { Filter } from '@/types/types';
-import { getFilters } from '@/services/getPlaces';
 import { MetroLines } from '@/services/constants';
 import { usePathname, useSearchParams } from 'next/navigation';
 import styles from './PlacesFilters.module.scss';
+import { API } from '@/services/apiRequests';
 
 export const PlacesFilters = () => {
   const [openGroupId, setOpenGroupId] = useState<null | number>(null);
@@ -22,7 +22,7 @@ export const PlacesFilters = () => {
   };
 
   useEffect(() => {
-    getFilters().then((filtersArr) => {
+    API.getFilters().then((filtersArr) => {
       setFilters(filtersArr);
     });
   }, []);

@@ -1,14 +1,9 @@
-import { AUTH } from '@/services/auth';
+import { API } from '@/services/apiRequests';
 import type { NextAuthOptions } from 'next-auth';
 import Credential from 'next-auth/providers/credentials';
-// import GoogleProvider from 'next-auth/providers/google';
 
 export const authConfig: NextAuthOptions = {
   providers: [
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID as string,
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    // }),
     Credential({
       name: 'credentials',
       credentials: {
@@ -18,13 +13,13 @@ export const authConfig: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) return null;
 
-        const userToken = await AUTH.getToken(
+        const userToken = await API.getToken(
           credentials.email,
           credentials.password
         );
         console.log('userToken:', userToken);
         if (userToken.access) {
-          const res = await AUTH.getUserData(userToken.access);
+          const res = await API.getUserData(userToken.access);
           res.access = userToken.access;
 
           return res;

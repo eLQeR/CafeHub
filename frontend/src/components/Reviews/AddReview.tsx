@@ -1,12 +1,12 @@
 'use client';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import styles from './ReviewsList.module.scss';
-import { signIn, useSession } from 'next-auth/react';
-import { REVIEW } from '@/services/reviews';
+import { useSession } from 'next-auth/react';
 import { ReviewStars } from './ReviewStars';
 import Link from 'next/link';
 import { Reviews } from '@/types/types';
 import { toast } from 'sonner';
+import { API } from '@/services/apiRequests';
 type Props = {
   placeId: string;
   setReviewList: React.Dispatch<React.SetStateAction<Reviews[]>>;
@@ -24,7 +24,7 @@ export const AddReview: React.FC<Props> = ({ placeId, setReviewList }) => {
     let formData = new FormData(formRef.current);
     formData.append('cafe', placeId);
 
-    const res = await REVIEW.addReview(formData);
+    const res = await API.addReview(formData);
     if (res.id) {
       setReviewList((prev) => [res, ...prev]);
       formRef.current.reset();
