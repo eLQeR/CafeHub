@@ -7,7 +7,7 @@ import cn from 'classnames';
 
 export const SearchField = ({ style }: { style: string }) => {
   const searchParams = useSearchParams();
-  const searchRequest = searchParams.get('name');
+  
   const [searchValue, setSearchValue] = useState('');
   const [err, setErr] = useState(false);
 
@@ -33,6 +33,7 @@ export const SearchField = ({ style }: { style: string }) => {
   };
 
   useEffect(() => {
+    const searchRequest = searchParams.get('name');
     if (searchRequest !== null) {
       setSearchValue(searchRequest);
     }

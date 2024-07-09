@@ -9,7 +9,7 @@ import { Pagination } from '@/components/Pagination';
 import { PAGINATION_ITEM_LIMIT } from '@/services/constants';
 import { Loader } from '@/components/Loader';
 
-const page = () => {
+const SearchPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const searchRequest = searchParams.get('name');
@@ -67,4 +67,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default SearchPage;
