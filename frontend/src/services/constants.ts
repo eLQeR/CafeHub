@@ -1,5 +1,6 @@
-export const API_URL = 'http://localhost:8000/api';
-export const IMG_URL = 'http://127.0.0.1:8000/';
+const HOST = 'http://localhost:8000/'
+export const API_URL = `${HOST}api`;
+export const IMG_URL = HOST;
 
 export const PAGINATION_ITEM_LIMIT = 2;
 

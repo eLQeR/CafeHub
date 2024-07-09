@@ -112,3 +112,8 @@ export type HomePageDataType = {
   new: HomePagePlaceType[];
   popular: HomePagePlaceType[];
 };
+
+export type EmailVerifYType = {
+  result?: string;
+  detail?: string;
+};

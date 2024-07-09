@@ -1,4 +1,4 @@
-import { HomePageDataType, PlaceResponse } from '@/types/types';
+import { EmailVerifYType, HomePageDataType, PlaceResponse } from '@/types/types';
 import { API_URL } from './constants';
 
 const getSearchData = async (
@@ -24,7 +24,16 @@ const getHomePageData = async () => {
   return results;
 }
 
+const getEmailVerify = async (uuid:string) => {
+  const data = await fetch(`${API_URL}/user/verify-email/${uuid}/`);
+
+  const results: EmailVerifYType = await data.json();
+
+  return results;
+}
+
 export const API = {
   getSearchData,
-  getHomePageData
+  getHomePageData,
+  getEmailVerify
 };
