@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework import generics
 from rest_framework.decorators import api_view
@@ -51,10 +50,12 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
         description="User can verify his profile by email"
     )
 )
-@login_required
 @api_view(["GET"])
 def verify_email(request, verification_uuid):
-    user = get_object_or_404(get_user_model(), verification_uuid=verification_uuid)
+    user = get_object_or_404(
+        get_user_model(),
+        verification_uuid=verification_uuid
+    )
     user.is_email_verified = True
     user.save()
-    return Response(data="Your email has been verified", status=200)
+    return Response(data={"result": "Your email has been verified"}, status=200)
