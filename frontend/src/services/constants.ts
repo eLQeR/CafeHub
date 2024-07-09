@@ -1,8 +1,8 @@
-const HOST = 'http://localhost:8000/'
+const HOST = 'http://localhost:8000/';
 export const API_URL = `${HOST}api`;
 export const IMG_URL = HOST;
 
-export const PAGINATION_ITEM_LIMIT = 2;
+export const PAGINATION_ITEM_LIMIT = 10;
 
 export const MetroLines = [
   {

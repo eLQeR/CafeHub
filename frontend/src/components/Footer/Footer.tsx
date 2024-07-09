@@ -1,14 +1,13 @@
 'use client';
 import React from 'react';
 import styles from './Footer.module.scss';
-import Link from 'next/link';
 import Image from 'next/image';
 
 export const Footer = () => {
   return (
     <footer className={styles.footer}>
       <div className={styles.footer__container}>
-        <div className={styles.footer__top}>
+        {/* <div className={styles.footer__top}>
           <Link href='/' className={styles.footer__link}>
             github
           </Link>
@@ -18,7 +17,7 @@ export const Footer = () => {
           <Link href='/' className={styles.footer__link}>
             rights
           </Link>
-        </div>
+        </div> */}
         <div className={styles.footer__bot}>
           &copy;
           <Image
