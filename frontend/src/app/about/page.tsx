@@ -3,6 +3,13 @@ import s from './about.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Про проєкт | CafeHub',
+  description: 'Більше інформації про проєкт CafeHub та його команду',
+};
+
 const page = () => {
   return (
     <main>
