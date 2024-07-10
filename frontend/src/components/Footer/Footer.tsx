@@ -7,18 +7,7 @@ export const Footer = () => {
   return (
     <footer className={styles.footer}>
       <div className={styles.footer__container}>
-        {/* <div className={styles.footer__top}>
-          <Link href='/' className={styles.footer__link}>
-            github
-          </Link>
-          <Link href='/' className={styles.footer__link}>
-            contacts
-          </Link>
-          <Link href='/' className={styles.footer__link}>
-            rights
-          </Link>
-        </div> */}
-        <div className={styles.footer__bot}>
+         <div className={styles.footer__bot}>
           &copy;
           <Image
             src='/img/logo.png'

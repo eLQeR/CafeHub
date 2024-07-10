@@ -7,6 +7,8 @@ import { RatingStar } from '@/components/RatingStar';
 import Link from 'next/link';
 import { ReviewsList } from '@/components/Reviews';
 import { API } from '@/services/apiRequests';
+import Map from '@/components/Map/Map';
+import Image from 'next/image';
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [place, setPlace] = useState<undefined | DetailsPlace>(undefined);
@@ -24,6 +26,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       {place ? (
         <main className={styles.page__container}>
           <h1 className={styles.page__title}>{place.name}</h1>
+
           <section className={styles.page__top}>
             <div className={styles['page__top--column']}>
               <div className={styles.metro__div}>
@@ -110,13 +113,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           </section>
           <ReviewsList reviews={place.reviews} placeId={params.slug} />
           <section id='map'>
-            <iframe
-              src={place.google_address_url}
-              width='100%'
-              height='600'
-              style={{ border: 'none' }}
-              loading='lazy'
-            ></iframe>
+            <Map place={place} />
           </section>
         </main>
       ) : (
