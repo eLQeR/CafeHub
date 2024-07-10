@@ -1,0 +1,31 @@
+.page {
+  &__container {
+    margin-inline: auto;
+    max-width: 870px;
+    padding-inline: 10px;
+    width: 100%;
+  }
+}
+.catalog {
+  flex: 1;
+  padding: 10px;
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    color: #57606a;
+    font-size: 18px;
+    line-height: 17px;
+    text-transform: uppercase;
+  }
+  &__list {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}

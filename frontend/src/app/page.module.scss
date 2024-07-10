@@ -1,0 +1,147 @@
+@import '../styles/vars';
+@import '../styles/mixin';
+
+.page__container {
+  margin-inline: auto;
+  max-width: 1136px;
+  padding-inline: 10px;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 600px;
+  margin-bottom: 10px;
+
+  &__content {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    // border: 1px dashed white;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+  }
+
+  &__title {
+    text-align: center;
+    font-size: 47px;
+    user-select: none;
+    color: white;
+    padding-inline: 10px;
+
+    @include tablet {
+      font-size: 40px;
+      padding-inline: 10px;
+    }
+  }
+  &__row {
+    display: flex;
+    width: 60%;
+    @include mobile {
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      padding-inline: 10px;
+    }
+    @include tablet {
+      width: 80%;
+    }
+  }
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  width: calc(100% - 84px);
+  margin: 0 auto 15px;
+  @include mobile {
+    flex-direction: column;
+  }
+  @include tablet {
+    width: 100%;
+  }
+
+  &__top {
+    text-align: center;
+    font-size: 18px;
+    background: #f8fcff;
+    box-shadow: 10px 0 40px rgba(114, 114, 114, 0.15);
+    border-radius: 8px;
+    width: calc(100% - 84px);
+    margin: 0 auto 15px;
+    padding: 1px;
+    @include tablet {
+      width: 100%;
+    }
+  }
+
+  &__item {
+    // border: 1px solid;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 350px;
+    width: 100%;
+    position: relative;
+    @include tablet {
+      height: 250px;
+    }
+
+    &_title {
+      text-transform: capitalize;
+      font-size: 22px;
+      position: absolute;
+      color: #f5941a;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      background-color: gray;
+      padding-block: 10px;
+    }
+  }
+}
+.error {
+  &__title {
+    color: #f84147;
+    margin-bottom: 32px;
+    font-size: 24px;
+  }
+  &__heading {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+  &__message{
+    margin-bottom: 40px;
+    font-size: 16px;
+  }
+}
+.content {
+  margin-bottom: 50px;
+}
+.links {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 150px;
+}
+.link {
+  padding: 15px 25px;
+  background-color: transparent;
+  border: 1px solid #f4961a;
+  cursor: pointer;
+  color: #f4961a;
+  text-transform: uppercase;
+  font-size: 17px;
+  font-weight: 600;
+  transition: all 0.4s linear;
+  text-decoration: none;
+  &:hover {
+    background-color: rgba(128, 128, 128, 0.6);
+    border: 1px solid grey;
+    color: black;
+  }
+}

@@ -26,7 +26,7 @@ Location: Find cafes that are conveniently located near parks, museums, or sceni
 
 ## Deploy
 
-CafeHub is hosted on EC2 AWS instance  [web-site](http://13.48.146.199) on "http"
+CafeHub is hosted on EC2 AWS instance  [web-site](http://13.48.146.199/) on "http"
 
 ## Installation
 
@@ -34,22 +34,22 @@ To run this application, install [docker](https://www.docker.com/products/docker
 Use the docker-compose.yml file to start up an application.
 
 ### How to run:
-- Copy .env.sample -> .env and populate with all required data
+- Copy backend/.env.sample -> .env and populate with all required data
+- Copy frontend/.env.local.sample -> .env.local and populate with all required data
 - `docker-compose up --build`
 - Create admin user (Optional)
 - `docker-compose exec -ti backend python manage.py createsuperuser`
 
-Test admin user:
-username: `yaros@gmail.com`
-password: `111`
 
 ## Demo of site
 
-<a href="https://ibb.co/kmQLL1k"><img src="https://i.ibb.co/1z8CC6h/1.jpg" alt="1" border="0" /></a>
-<a href="https://ibb.co/fdBGBQ6"><img src="https://i.ibb.co/DfsgsLc/2.jpg" alt="2" border="0" /></a>
-<a href="https://ibb.co/1X0mX85"><img src="https://i.ibb.co/5j1RjBy/3.jpg" alt="3" border="0" /></a>
-<a href="https://ibb.co/DgY5nQn"><img src="https://i.ibb.co/1JM8xTx/4.jpg" alt="4" border="0" /></a>
-<a href="https://ibb.co/k9B832F"><img src="https://i.ibb.co/txKsZp5/5.jpg" alt="5" border="0" /></a>
+![img.png](demo_images/img.png)
+![img_1.png](demo_images/img_1.png)
+![img_2.png](demo_images/img_2.png)
+![img_3.png](demo_images/img_3.png)
+![img_4.png](demo_images/img_4.png)
+![img_5.png](demo_images/img_5.png)
+![img_6.png](demo_images/img_6.png)
 
 ## License
 

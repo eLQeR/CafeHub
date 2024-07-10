@@ -1,95 +1,71 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import { Slider } from '@/components/Slider';
+import styles from './page.module.scss';
+import Image from 'next/image';
+import Link from 'next/link';
+import { SearchField } from '@/components/SearchField';
+import { useEffect, useState } from 'react';
+import { API } from '@/services/apiRequests';
+import { HomePagePlaceType } from '@/types/types';
+import { COLLECTIONS } from '@/services/constants';
 
 export default function Home() {
+  const [newPlaces, setNewPlaces] = useState<HomePagePlaceType[]>([]);
+  const [popularPlaces, setPopularPlaces] = useState<HomePagePlaceType[]>([]);
+
+
+  useEffect(() => {
+    API.getHomePageData().then((data) => {
+      setNewPlaces(data.new);
+      setPopularPlaces(data.popular);
+    });
+  }, []);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <div className={styles.hero}>
+        <Image src='/hero.png' fill alt='logo' style={{ objectFit: 'cover' }} />
+        <div className={styles.hero__content}>
+          <h1 className={styles.hero__title}>
+            Знайдіть найкращі ресторани, кафе та бари Київа
+          </h1>
+          <div className={styles.hero__row}>
+            <SearchField style='hero' />
+          </div>
         </div>
       </div>
+      <main className={styles.page__container}>
+        <div className={styles.filters__top}>
+          <h3 className={styles.filters__title}>Колекції для вас</h3>
+        </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <div className={styles.filters}>
+          {COLLECTIONS.map((item) => (
+            <Link
+              href={item.url}
+              className={styles.filters__item}
+              key={item.name}
+            >
+              <Image
+                src={item.imgUrl}
+                fill
+                alt={item.name}
+                style={{ objectFit: 'cover' }}
+              />
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+              <p className={styles.filters__item_title}>{item.name}</p>
+            </Link>
+          ))}
+        </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        {newPlaces.length > 0 && (
+          <Slider sliderTitle={'Нові заклади'} places={newPlaces} />
+        )}
+        {popularPlaces.length > 0 && (
+          <Slider sliderTitle={'Популярні заклади'} places={popularPlaces} />
+        )}
+      </main>
+    </>
   );
 }

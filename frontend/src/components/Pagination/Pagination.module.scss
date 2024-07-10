@@ -1,0 +1,40 @@
+.pagination {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+
+  &__link {
+    flex: 1;
+    text-align: center;
+    background-color: white;
+    padding: 10px 20px;
+    color: black;
+    text-decoration: none;
+    border: 1px solid #f4961a;
+    cursor: pointer;
+    color: #f4961a;
+    text-transform: uppercase;
+    font-size: 17px;
+    font-weight: 600;
+    transition: all 0.4s linear;
+
+    &:hover {
+      background-color: rgba(128, 128, 128, 0.6);
+      border: 1px solid grey;
+
+      color: black;
+    }
+  }
+}
+.disabled {
+  background-color: grey;
+  border: 1px solid grey;
+  color: rgba(0, 0, 0, 0.3);
+  cursor: no-drop;
+  &:hover {
+    background-color: grey;
+    border: 1px solid grey;
+    color: rgba(0, 0, 0, 0.3);
+  }
+}
