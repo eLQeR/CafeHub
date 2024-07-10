@@ -15,7 +15,6 @@ const containerStyle = {
 };
 
 const Map = ({ place }: { place: DetailsPlace }) => {
-  console.log('place', place);
   const [center, setCenter] = useState<{ lat: number; lng: number } | null>(
     null
   );
